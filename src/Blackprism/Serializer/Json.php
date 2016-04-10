@@ -260,6 +260,9 @@ class Json implements SerializerInterface
      */
     protected function checkNullForAttribute($value, $attribute): bool
     {
+
+        // We don't use $attribute here, we want filter all value with the same behavior
+
         if ($value === null
             || is_array($value) === true && $value === []
             || $value instanceof \Countable && count($value) === 0) {
