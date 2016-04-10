@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Bouh\Serializer" default="all">
+    <target name="all">
+        <phingcall target="phpcs" />
+        <phingcall target="phplint" />
+        <phingcall target="phpmd" />
+    </target>
+
+    <target name="phpcs">
+        <phpcodesniffer
+                standard="PSR2"
+                showSniffs="true"
+                showWarnings="true"
+                format="full"
+                haltonerror="true"
+                haltonwarning="true">
+            <fileset dir="src/Blackprism/Serializer">
+                <include name="**/*.php" />
+            </fileset>
+            <formatter type="full" outfile="php://stdout" />
+        </phpcodesniffer>
+    </target>
+
+    <target name="phplint">
+        <phplint haltonfailure="true">
+            <fileset dir="src/Blackprism/Serializer">
+                <include name="**/*.php" />
+            </fileset>
+        </phplint>
+    </target>
+
+    <target name="phpmd">
+        <phpmd rulesets="codesize,unusedcode,naming">
+            <fileset dir="src/Blackprism/Serializer">
+                <include name="**/*.php" />
+            </fileset>
+        </phpmd>
+    </target>
+</project>

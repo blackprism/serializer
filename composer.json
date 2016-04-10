@@ -1,0 +1,24 @@
+{
+    "name": "blackprism/serializer",
+    "authors": [
+        {
+            "name": "Sylvain Robez-Masson",
+            "email": "srm@bouh.org"
+        }
+    ],
+    "require": {
+        "php": ">=7"
+    },
+    "require-dev": {
+        "phing/phing": "^2.0",
+        "phpmd/phpmd": "^2.0",
+        "sebastian/phpcpd": "^1.0",
+        "squizlabs/php_codesniffer": "^1.0"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Blackprism\\Serializer\\": "src/Blackprism/Serializer/",
+            "Blackprism\\Demo\\": "src/Blackprism/Demo/"
+        }
+    }
+}
