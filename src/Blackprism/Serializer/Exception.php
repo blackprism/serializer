@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Blackprism\Serializer;
 
 /**
- * InvalidSerializedValue
+ * Exception
  */
-class InvalidSerializedValue extends \Exception
+class Exception extends \Exception
 {
 }

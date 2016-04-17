@@ -7,7 +7,7 @@ namespace Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration;
 
 /**
- * Class ObjectInterface
+ * ObjectInterface
  */
 interface ObjectInterface
 {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Blackprism\Serializer;
 
 use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Exception\InvalidJson;
+use Blackprism\Serializer\Exception\InvalidObject;
 
 /**
  * Json
