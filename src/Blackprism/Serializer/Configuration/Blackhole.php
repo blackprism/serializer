@@ -16,9 +16,9 @@ final class Blackhole implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseMethod(string $attribute, string $setter, string $getter)
+    public function attributeUseMethod(string $attribute, string $setter, string $getter): ObjectInterface
     {
         return $this;
     }
@@ -29,10 +29,14 @@ final class Blackhole implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseObject(string $attribute, string $class, string $setter, string $getter)
-    {
+    public function attributeUseObject(
+        string $attribute,
+        string $class,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
         return $this;
     }
 
@@ -42,10 +46,14 @@ final class Blackhole implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseCollectionObject(string $attribute, string $class, string $setter, string $getter)
-    {
+    public function attributeUseCollectionObject(
+        string $attribute,
+        string $class,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
         return $this;
     }
 
@@ -54,9 +62,9 @@ final class Blackhole implements ObjectInterface
      * @param callable $serialize
      * @param callable $deserialize
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseHandler(string $attribute, callable $serialize, callable $deserialize)
+    public function attributeUseHandler(string $attribute, callable $serialize, callable $deserialize): ObjectInterface
     {
         return $this;
     }
@@ -64,9 +72,9 @@ final class Blackhole implements ObjectInterface
     /**
      * @param Configuration $configuration
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function registerToConfiguration(Configuration $configuration)
+    public function registerToConfiguration(Configuration $configuration): ObjectInterface
     {
         return $this;
     }

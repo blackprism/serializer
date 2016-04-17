@@ -19,12 +19,23 @@ final class Configuration
      */
     private $objects;
 
+    /**
+     * @param string $class
+     * @param ObjectInterface $configurationObject
+     *
+     * @return Configuration
+     */
     public function addConfigurationObject(string $class, ObjectInterface $configurationObject): self
     {
         $this->objects[$class] = $configurationObject;
         return $this;
     }
 
+    /**
+     * @param string $class
+     * 
+     * @return ObjectInterface
+     */
     public function getConfigurationObjectForClass(string $class): ObjectInterface
     {
         if (isset($this->objects[$class]) === true) {

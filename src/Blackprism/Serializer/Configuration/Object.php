@@ -11,8 +11,8 @@ use Blackprism\Serializer\Configuration\Type\Blackhole;
  * Object
  *
  * @property string $className
- * @property Blackhole $blackhole
  * @property Type[string] $attributes
+ * @property Blackhole $blackhole
  */
 final class Object implements ObjectInterface
 {
@@ -46,9 +46,9 @@ final class Object implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseMethod(string $attribute, string $setter, string $getter)
+    public function attributeUseMethod(string $attribute, string $setter, string $getter): ObjectInterface
     {
         $this->attributes[$attribute] = new Configuration\Type\Method($setter, $getter);
 
@@ -61,10 +61,14 @@ final class Object implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseObject(string $attribute, string $className, string $setter, string $getter)
-    {
+    public function attributeUseObject(
+        string $attribute,
+        string $className,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
         $this->attributes[$attribute] = new Configuration\Type\Object($className, $setter, $getter);
 
         return $this;
@@ -76,10 +80,14 @@ final class Object implements ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseCollectionObject(string $attribute, string $className, string $setter, string $getter)
-    {
+    public function attributeUseCollectionObject(
+        string $attribute,
+        string $className,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
         $this->attributes[$attribute] = new Configuration\Type\Object($className, $setter, $getter, true);
 
         return $this;
@@ -90,9 +98,9 @@ final class Object implements ObjectInterface
      * @param callable $deserialize
      * @param callable $serialize
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseHandler(string $attribute, callable $deserialize, callable $serialize)
+    public function attributeUseHandler(string $attribute, callable $deserialize, callable $serialize): ObjectInterface
     {
         $this->attributes[$attribute] = new Configuration\Type\Handler($deserialize, $serialize);
 
@@ -102,9 +110,9 @@ final class Object implements ObjectInterface
     /**
      * @param Configuration $mapperConfiguration
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function registerToConfiguration(Configuration $mapperConfiguration)
+    public function registerToConfiguration(Configuration $mapperConfiguration): ObjectInterface
     {
         $mapperConfiguration->addConfigurationObject($this->className, $this);
 

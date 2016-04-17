@@ -19,9 +19,9 @@ interface ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseMethod(string $attribute, string $setter, string $getter);
+    public function attributeUseMethod(string $attribute, string $setter, string $getter): self;
 
     /**
      * Serialize/Deserialize attribute as an object
@@ -31,9 +31,9 @@ interface ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseObject(string $attribute, string $class, string $setter, string $getter);
+    public function attributeUseObject(string $attribute, string $class, string $setter, string $getter): self;
 
     /**
      * Serialize/Deserialize attribute as an collection of objects
@@ -43,9 +43,9 @@ interface ObjectInterface
      * @param string $setter
      * @param string $getter
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseCollectionObject(string $attribute, string $class, string $setter, string $getter);
+    public function attributeUseCollectionObject(string $attribute, string $class, string $setter, string $getter): self;
 
     /**
      * Serialize/Deserialize attribute via callable
@@ -54,18 +54,18 @@ interface ObjectInterface
      * @param callable $serialize
      * @param callable $deserialize
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function attributeUseHandler(string $attribute, callable $serialize, callable $deserialize);
+    public function attributeUseHandler(string $attribute, callable $serialize, callable $deserialize): self;
 
     /**
      * Tell Object to register to Configuration
      *
      * @param Configuration $configuration
      *
-     * @return $this
+     * @return ObjectInterface
      */
-    public function registerToConfiguration(Configuration $configuration);
+    public function registerToConfiguration(Configuration $configuration): self;
 
     /**
      * Retrieve type for attribute

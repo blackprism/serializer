@@ -78,14 +78,15 @@ class Json implements SerializerInterface
         return $object;
     }
 
+
     /**
      * @param Type\Method $method
      * @param Object $object
      * @param mixed $value
      *
-     * @return $this
+     * @return Json
      */
-    private function processDeserializeTypeMethod(Type\Method $method, $object, $value)
+    private function processDeserializeTypeMethod(Type\Method $method, $object, $value): self
     {
         $object->{$method->setter()}($value);
 
@@ -97,9 +98,9 @@ class Json implements SerializerInterface
      * @param Object $object
      * @param mixed $value
      *
-     * @return $this
+     * @return Json
      */
-    private function processDeserializeTypeObject(Type\Object $objectType, $object, $value)
+    private function processDeserializeTypeObject(Type\Object $objectType, $object, $value): self
     {
         if ($objectType->isCollection() === true) {
             $objects = [];
@@ -122,9 +123,9 @@ class Json implements SerializerInterface
      * @param Object $object
      * @param mixed $value
      *
-     * @return $this
+     * @return Json
      */
-    private function processDeserializeTypeHandler(Type\Handler $handler, $object, $value)
+    private function processDeserializeTypeHandler(Type\Handler $handler, $object, $value): self
     {
         call_user_func($handler->deserializer(), $object, $value);
 
@@ -161,7 +162,7 @@ class Json implements SerializerInterface
      *
      * @return array
      */
-    private function setArray($object)
+    private function setArray($object): array
     {
         $data = [];
 
