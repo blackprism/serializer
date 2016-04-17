@@ -1,69 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blackprism\Demo\Entity;
 
+/**
+ * Country
+ */
 class Country
 {
 
-    protected $code = null;
-    protected $name = null;
-    protected $city = null;
+    /**
+     * @var string
+     */
+    private $code = '';
 
-    public function setCode($code)
+    /**
+     * @var string
+     */
+    private $name = '';
+
+    /**
+     * @var City
+     */
+    private $city = null;
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code)
     {
-        $this->code = (string) $code;
+        $this->code = $code;
     }
 
-    public function getCode()
+    /**
+     * @return string
+     */
+    public function getCode(): string
     {
-        return (string) $this->code;
+        return $this->code;
     }
 
-    public function setName($name)
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
     {
-        $this->name = (string) $name;
+        $this->name = $name;
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
-    public function setContinent($continent)
-    {
-        $this->continent = (string) $continent;
-    }
-
-    public function getContinent()
-    {
-        return (string) $this->continent;
-    }
-
-    public function setRegion($region)
-    {
-        $this->region = (string) $region;
-    }
-
-    public function getRegion()
-    {
-        return (string) $this->region;
-    }
-
-    public function setPresident($president)
-    {
-        $this->president = (string) $president;
-    }
-
-    public function getPresident()
-    {
-        return (string) $this->president;
-    }
-
+    /**
+     * @param City $city
+     */
     public function cityIs(City $city)
     {
         $this->city = $city;
     }
 
+    /**
+     * @return City|null
+     */
     public function getCity()
     {
         return $this->city;

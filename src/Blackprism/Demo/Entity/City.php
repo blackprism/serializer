@@ -1,105 +1,115 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Blackprism\Demo\Entity;
 
+/**
+ * City
+ */
 class City
 {
+    /**
+     * @var int
+     */
+    private $id = 0;
 
-    protected $id          = null;
-    protected $name        = null;
-    protected $country     = null;
-    protected $countries   = [];
+    /**
+     * @var string
+     */
+    private $name = '';
 
-    public function setId($id)
+    /**
+     * @var Country
+     */
+    private $country = null;
+
+    /**
+     * @var string
+     */
+    private $countryCode = '';
+
+    /**
+     * @var array
+     */
+    private $countries = [];
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
     {
-        $this->id = (int) $id;
+        $this->id = $id;
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
-    public function setName($name)
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
     {
-        $this->name = (string) $name;
+        $this->name = $name;
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
-    public function setCountryCode($countryCode)
+    /**
+     * @param string $countryCode
+     */
+    public function setCountryCode(string $countryCode)
     {
-        $this->countryCode = (string) $countryCode;
+        $this->countryCode = $countryCode;
     }
 
-    public function getCountryCode()
+    /**
+     * @return string
+     */
+    public function getCountryCode(): string
     {
-        return (string) $this->countryCode;
+        return $this->countryCode;
     }
 
-    public function setDistrict($district)
-    {
-        $this->district = (string) $district;
-    }
-
-    public function getDistrict()
-    {
-        return (string) $this->district;
-    }
-
-    public function setPopulation($population)
-    {
-        $this->population = (int) $population;
-    }
-
-    public function getPopulation()
-    {
-        return (int) $this->population;
-    }
-
-    public function setDt(\DateTime $dt = null)
-    {
-        $this->dt = $dt;
-    }
-
-    public function getDt()
-    {
-        if (is_object($this->dt) === true) {
-            return clone $this->dt;
-        }
-
-        return $this->dt;
-    }
-
-    public function setTutu($value)
-    {
-        $this->tutu = $value;
-    }
-
-    public function setBroum($value)
-    {
-        $this->broum = $value;
-    }
-
+    /**
+     * @param Country $country
+     */
     public function countryIs(Country $country)
     {
         $this->country = $country;
     }
 
+    /**
+     * @return Country|null
+     */
     public function getCountry()
     {
         return $this->country;
     }
 
+    /**
+     * @param Country[] $countries
+     */
     public function countriesAre(array $countries)
     {
         $this->countries = $countries;
     }
 
-    public function getCountries()
+    /**
+     * @return Country[]
+     */
+    public function getCountries(): array
     {
         return $this->countries;
     }
