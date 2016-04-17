@@ -9,43 +9,43 @@ use Blackprism\Serializer\Configuration\Type;
 /**
  * Handler
  *
- * @property callable $deserializer
- * @property callable $serializer
+ * @property HandlerDeserializer $deserializer
+ * @property HandlerSerializer $serializer
  */
 final class Handler implements Type
 {
     /**
-     * @var callable
+     * @var HandlerDeserializer
      */
     private $deserializer;
 
     /**
-     * @var callable
+     * @var HandlerSerializer
      */
     private $serializer;
 
     /**
-     * @param callable $deserializer
-     * @param callable $serializer
+     * @param HandlerDeserializer $deserializer
+     * @param HandlerSerializer $serializer
      */
-    public function __construct(callable $deserializer, callable $serializer)
+    public function __construct(HandlerDeserializer $deserializer, HandlerSerializer $serializer)
     {
         $this->deserializer = $deserializer;
         $this->serializer = $serializer;
     }
 
     /**
-     * @return callable
+     * @return HandlerDeserializer
      */
-    public function deserializer(): callable
+    public function deserializer(): HandlerDeserializer
     {
         return $this->deserializer;
     }
 
     /**
-     * @return callable
+     * @return HandlerSerializer
      */
-    public function serializer(): callable
+    public function serializer(): HandlerSerializer
     {
         return $this->serializer;
     }

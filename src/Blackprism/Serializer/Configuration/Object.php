@@ -6,6 +6,8 @@ namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type\Blackhole;
+use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
+use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
 
 /**
  * Object
@@ -94,14 +96,17 @@ final class Object implements ObjectInterface
     }
 
     /**
-     * @param string   $attribute
-     * @param callable $deserialize
-     * @param callable $serialize
+     * @param string $attribute
+     * @param HandlerDeserializer $deserialize
+     * @param HandlerSerializer $serialize
      *
      * @return ObjectInterface
      */
-    public function attributeUseHandler(string $attribute, callable $deserialize, callable $serialize): ObjectInterface
-    {
+    public function attributeUseHandler(
+        string $attribute,
+        HandlerDeserializer $deserialize,
+        HandlerSerializer $serialize
+    ): ObjectInterface {
         $this->attributes[$attribute] = new Configuration\Type\Handler($deserialize, $serialize);
 
         return $this;

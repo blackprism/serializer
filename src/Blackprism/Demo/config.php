@@ -15,11 +15,19 @@ $configurationObject
 $configurationObject = new Configuration\Object(Blackprism\Demo\Entity\Country::class);
 $configurationObject
     ->attributeUseMethod('code', 'setCode', 'getCode')
-    ->attributeUseHandler('name', function () {
-
+    ->attributeUseHandler(
+        'name',
+        new class implements Configuration\Type\HandlerDeserializer {
+            public function deserialize($object, $value)
+            {
+                $object->setName($value);
+            }
         },
-        function () {
-
+        new class implements Configuration\Type\HandlerSerializer {
+            public function serialize($object)
+            {
+                return $object->getName();
+            }
         })
     ->attributeUseObject('city', Blackprism\Demo\Entity\City::class, 'cityIs', 'getCity')
     ->registerToConfiguration($configuration);

@@ -129,7 +129,7 @@ class Json implements SerializerInterface
      */
     private function processDeserializeTypeHandler(Type\Handler $handler, $object, $value): self
     {
-        call_user_func($handler->deserializer(), $object, $value);
+        $handler->deserializer()->deserialize($object, $value);
 
         return $this;
     }
@@ -235,15 +235,15 @@ class Json implements SerializerInterface
 
     /**
      * @param Type\Handler $handler
-     * @param Object       $object
-     * @param mixed        $data
-     * @param string       $attribute
+     * @param Object $object
+     * @param mixed $data
+     * @param string attribute
      *
      * @return mixed
      */
     private function processSerializeTypeHandler(Type\Handler $handler, $object, $data, string $attribute)
     {
-        $value = call_user_func($handler->serializer(), $object);
+        $value = $handler->serializer()->serialize($object);
 
         if ($this->checkNullForAttribute($value, $attribute) === false) {
             $data[$attribute] = $value;

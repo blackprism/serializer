@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
+use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
+use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
 
 /**
  * ObjectInterface
@@ -55,13 +57,17 @@ interface ObjectInterface
     /**
      * Serialize/Deserialize attribute via callable
      *
-     * @param string   $attribute
-     * @param callable $serialize
-     * @param callable $deserialize
+     * @param string $attribute
+     * @param HandlerDeserializer $deserialize
+     * @param HandlerSerializer $serialize
      *
      * @return ObjectInterface
      */
-    public function attributeUseHandler(string $attribute, callable $serialize, callable $deserialize): self;
+    public function attributeUseHandler(
+        string $attribute,
+        HandlerDeserializer $deserialize,
+        HandlerSerializer $serialize
+    ): self;
 
     /**
      * Tell Object to register to Configuration
