@@ -33,7 +33,7 @@ final class Configuration
 
     /**
      * @param string $class
-     * 
+     *
      * @return ObjectInterface
      */
     public function getConfigurationObjectForClass(string $class): ObjectInterface

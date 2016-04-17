@@ -45,7 +45,12 @@ interface ObjectInterface
      *
      * @return ObjectInterface
      */
-    public function attributeUseCollectionObject(string $attribute, string $class, string $setter, string $getter): self;
+    public function attributeUseCollectionObject(
+        string $attribute,
+        string $class,
+        string $setter,
+        string $getter
+    ): self;
 
     /**
      * Serialize/Deserialize attribute via callable
