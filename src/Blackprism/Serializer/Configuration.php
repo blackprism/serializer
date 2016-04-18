@@ -6,6 +6,7 @@ namespace Blackprism\Serializer;
 
 use Blackprism\Serializer\Configuration\Blackhole;
 use Blackprism\Serializer\Configuration\ObjectInterface;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Configuration
@@ -32,14 +33,14 @@ final class Configuration
     }
 
     /**
-     * @param string $class
+     * @param ClassName $class
      *
      * @return ObjectInterface
      */
-    public function getConfigurationObjectForClass(string $class): ObjectInterface
+    public function getConfigurationObjectForClass(ClassName $class): ObjectInterface
     {
-        if (isset($this->objects[$class]) === true) {
-            return $this->objects[$class];
+        if (isset($this->objects[$class->getIdentifier()]) === true) {
+            return $this->objects[$class->getIdentifier()];
         }
 
         return new Blackhole();

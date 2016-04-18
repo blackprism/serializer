@@ -8,6 +8,7 @@ use Blackprism\Serializer\Configuration\ObjectInterface;
 use Blackprism\Serializer\Configuration\Type;
 use Blackprism\Serializer\Exception\InvalidJson;
 use Blackprism\Serializer\Exception\InvalidObject;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Json
@@ -33,12 +34,12 @@ class Json implements SerializerInterface
      * Deserialize string with class as the root object
      *
      * @param string $serialized
-     * @param string $class
+     * @param ClassName $class
      *
      * @return Object
      * @throws InvalidJson
      */
-    public function deserialize(string $serialized, string $class)
+    public function deserialize(string $serialized, ClassName $class)
     {
         $objectsAsArray = json_decode($serialized, true);
 
@@ -52,14 +53,14 @@ class Json implements SerializerInterface
     /**
      * Create class object with data
      *
-     * @param string $class
-     * @param array  $data
+     * @param ClassName $class
+     * @param array $data
      *
      * @return Object
      */
-    private function setObject(string $class, array $data)
+    private function setObject(ClassName $class, array $data)
     {
-        $object = new $class();
+        $object = $class->buildObject();
 
         /**
          * @var string $attribute
@@ -189,7 +190,7 @@ class Json implements SerializerInterface
     {
         $data = [];
 
-        $configurationObject = $this->configuration->getConfigurationObjectForClass(get_class($object));
+        $configurationObject = $this->configuration->getConfigurationObjectForClass(new ClassName(get_class($object)));
 
         foreach ($configurationObject->getAttributes() as $attribute) {
             $type = $configurationObject->getTypeForAttribute($attribute);

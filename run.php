@@ -55,7 +55,7 @@ $start = microtime(true);
 
 for ($i = 0; $i < 10000; $i++) {
     $jsonSerializer = new \Blackprism\Serializer\Json($configuration);
-    $city = $jsonSerializer->deserialize($json, \Blackprism\Demo\Entity\City::class);
+    $city = $jsonSerializer->deserialize($json, new \Blackprism\Serializer\Value\ClassName(\Blackprism\Demo\Entity\City::class));
 }
 $end = microtime(true);
 

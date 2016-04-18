@@ -7,6 +7,7 @@ namespace Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
 use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Blackhole
@@ -27,7 +28,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param string $class
+     * @param ClassName $class
      * @param string $setter
      * @param string $getter
      *
@@ -35,7 +36,7 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseObject(
         string $attribute,
-        string $class,
+        ClassName $class,
         string $setter,
         string $getter
     ): ObjectInterface {
@@ -44,7 +45,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param string $class
+     * @param ClassName $class
      * @param string $setter
      * @param string $getter
      *
@@ -52,7 +53,7 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseCollectionObject(
         string $attribute,
-        string $class,
+        ClassName $class,
         string $setter,
         string $getter
     ): ObjectInterface {

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Configuration\Type;
 
 use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Object
  *
- * @property string $className
+ * @property ClassName $className
  * @property string $setter
  * @property string $getter
  * @property bool $collection
@@ -17,7 +18,7 @@ use Blackprism\Serializer\Configuration\Type;
 final class Object implements Type
 {
     /**
-     * @var string
+     * @var ClassName
      */
     private $className;
 
@@ -37,12 +38,12 @@ final class Object implements Type
     private $collection;
 
     /**
-     * @param string $className
+     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      * @param bool $collection
      */
-    public function __construct(string $className, string $setter, string $getter, bool $collection = false)
+    public function __construct(ClassName $className, string $setter, string $getter, bool $collection = false)
     {
         $this->className = $className;
         $this->setter = $setter;
@@ -51,9 +52,9 @@ final class Object implements Type
     }
 
     /**
-     * @return string
+     * @return ClassName
      */
-    public function className(): string
+    public function className(): ClassName
     {
         return $this->className;
     }

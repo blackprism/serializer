@@ -7,6 +7,7 @@ namespace Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
 use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * ObjectInterface
@@ -29,19 +30,19 @@ interface ObjectInterface
      * Serialize/Deserialize attribute as an object
      *
      * @param string $attribute
-     * @param string $class
+     * @param ClassName $class
      * @param string $setter
      * @param string $getter
      *
      * @return ObjectInterface
      */
-    public function attributeUseObject(string $attribute, string $class, string $setter, string $getter): self;
+    public function attributeUseObject(string $attribute, ClassName $class, string $setter, string $getter): self;
 
     /**
      * Serialize/Deserialize attribute as an collection of objects
      *
      * @param string $attribute
-     * @param string $class
+     * @param ClassName $class
      * @param string $setter
      * @param string $getter
      *
@@ -49,7 +50,7 @@ interface ObjectInterface
      */
     public function attributeUseCollectionObject(
         string $attribute,
-        string $class,
+        ClassName $class,
         string $setter,
         string $getter
     ): self;

@@ -6,6 +6,7 @@ namespace Blackprism\Serializer;
 
 use Blackprism\Serializer\Exception\InvalidDeserializedValue;
 use Blackprism\Serializer\Exception\InvalidSerializedValue;
+use Blackprism\Serializer\Value\ClassName;
 
 /**
  * SerializerInterface
@@ -17,12 +18,12 @@ interface SerializerInterface
      * Deserialize with class name as root
      *
      * @param string $serialized
-     * @param string $class
+     * @param ClassName $class
      *
      * @return Object
      * @throws InvalidSerializedValue
      */
-    public function deserialize(string $serialized, string $class);
+    public function deserialize(string $serialized, ClassName $class);
 
     /**
      * Serialize with class name as root
