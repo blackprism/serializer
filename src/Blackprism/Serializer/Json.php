@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blackprism\Serializer;
 
+use Blackprism\Serializer\Configuration\ObjectInterface;
 use Blackprism\Serializer\Configuration\Type;
 use Blackprism\Serializer\Exception\InvalidJson;
 use Blackprism\Serializer\Exception\InvalidObject;
@@ -68,18 +69,27 @@ class Json implements SerializerInterface
             $configurationObject = $this->configuration->getConfigurationObjectForClass($class);
             $type = $configurationObject->getTypeForAttribute($attribute);
 
-            if ($type instanceof Type\Method) {
-                $this->processDeserializeTypeMethod($type, $object, $value);
-            } elseif ($type instanceof Type\Object) {
-                $this->processDeserializeTypeObject($type, $object, $value);
-            } elseif ($type instanceof Type\Handler) {
-                $this->processDeserializeTypeHandler($type, $object, $value);
-            }
+            $this->processDeserializeForType($type, $object, $value);
         }
 
         return $object;
     }
 
+    /**
+     * @param Type $type
+     * @param Object $object
+     * @param mixed $value
+     */
+    private function processDeserializeForType(Type $type, $object, $value)
+    {
+        if ($type instanceof Type\Method) {
+            $this->processDeserializeTypeMethod($type, $object, $value);
+        } elseif ($type instanceof Type\Object) {
+            $this->processDeserializeTypeObject($type, $object, $value);
+        } elseif ($type instanceof Type\Handler) {
+            $this->processDeserializeTypeHandler($type, $object, $value);
+        }
+    }
 
     /**
      * @param Type\Method $method
@@ -105,11 +115,7 @@ class Json implements SerializerInterface
     private function processDeserializeTypeObject(Type\Object $objectType, $object, $value): self
     {
         if ($objectType->isCollection() === true) {
-            $objects = [];
-            foreach ($value as $key => $objectData) {
-                $objects[$key] = $this->setObject($objectType->className(), $objectData);
-            }
-
+            $objects = $this->processDeserializeTypeObjectCollection($objectType, $value);
             $object->{$objectType->setter()}($objects);
         } else {
             $object->{$objectType->setter()}(
@@ -118,6 +124,22 @@ class Json implements SerializerInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param Type\Object $objectType
+     * @param array $values
+     *
+     * @return Object[]
+     */
+    private function processDeserializeTypeObjectCollection(Type\Object $objectType, array $values)
+    {
+        $objects = [];
+        foreach ($values as $key => $object) {
+            $objects[$key] = $this->setObject($objectType->className(), $object);
+        }
+
+        return $objects;
     }
 
     /**
@@ -172,14 +194,28 @@ class Json implements SerializerInterface
 
         foreach ($configurationObject->getAttributes() as $attribute) {
             $type = $configurationObject->getTypeForAttribute($attribute);
+            $data = $this->processSerializeForType($type, $object, $data, $attribute);
+        }
 
-            if ($type instanceof Type\Method) {
-                $data = $this->processSerializeTypeMethod($type, $object, $data, $attribute);
-            } elseif ($type instanceof Type\Object) {
-                $data = $this->processSerializeTypeObject($type, $object, $data, $attribute);
-            } elseif ($type instanceof Type\Handler) {
-                $data = $this->processSerializeTypeHandler($type, $object, $data, $attribute);
-            }
+        return $data;
+    }
+
+    /**
+     * @param Type $type
+     * @param Object $object
+     * @param array $data
+     * @param ObjectInterface $attribute
+     *
+     * @return array
+     */
+    private function processSerializeForType(Type $type, $object, $data, $attribute)
+    {
+        if ($type instanceof Type\Method) {
+            $data = $this->processSerializeTypeMethod($type, $object, $data, $attribute);
+        } elseif ($type instanceof Type\Object) {
+            $data = $this->processSerializeTypeObject($type, $object, $data, $attribute);
+        } elseif ($type instanceof Type\Handler) {
+            $data = $this->processSerializeTypeHandler($type, $object, $data, $attribute);
         }
 
         return $data;
@@ -188,7 +224,7 @@ class Json implements SerializerInterface
     /**
      * @param Type\Method $method
      * @param Object $object
-     * @param mixed $data
+     * @param array $data
      * @param string $attribute
      *
      * @return mixed
@@ -207,27 +243,69 @@ class Json implements SerializerInterface
     /**
      * @param Type\Object $objectType
      * @param Object $object
-     * @param mixed $data
+     * @param array $data
      * @param string $attribute
      *
-     * @return mixed
+     * @return array
      */
     private function processSerializeTypeObject(Type\Object $objectType, $object, $data, string $attribute)
     {
         if ($objectType->isCollection() === true) {
-            foreach ($object->{$objectType->getter()}() as $key => $subObject) {
-                $value = $this->setArray($subObject);
-
-                if ($this->checkNullForAttribute($value, $key) === false) {
-                    $data[$attribute][$key] = $value;
-                }
-            }
+            $data = $this->processSerializeTypeObjectCollection($objectType, $object, $data, $attribute);
         } else {
-            $value = $this->setArray($object->{$objectType->getter()}());
+            $data = $this->setArrayAndCheckNull($data, $object->{$objectType->getter()}(), $attribute);
+        }
 
-            if ($this->checkNullForAttribute($value, $attribute) === false) {
-                $data[$attribute] = $value;
-            }
+        return $data;
+    }
+
+    /**
+     * @param Type\Object $objectType
+     * @param Object $object
+     * @param array $data
+     * @param string $attribute
+     *
+     * @return array
+     */
+    private function processSerializeTypeObjectCollection(Type\Object $objectType, $object, array $data, string $attribute)
+    {
+        foreach ($object->{$objectType->getter()}() as $key => $subObject) {
+            $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param Object $object
+     * @param string $attribute
+     * @return array
+     */
+    private function setArrayAndCheckNull($data, $object, $attribute)
+    {
+        $value = $this->setArray($object);
+
+        if ($this->checkNullForAttribute($value, $attribute) === false) {
+            $data[$attribute]= $value;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param Object $object
+     * @param mixed $key
+     * @param string $attribute
+     * @return array
+     */
+    private function setArrayAndCheckNullWithKey($data, $object, $key, $attribute)
+    {
+        $value = $this->setArray($object);
+
+        if ($this->checkNullForAttribute($value, $key) === false) {
+            $data[$attribute][$key] = $value;
         }
 
         return $data;
@@ -236,8 +314,8 @@ class Json implements SerializerInterface
     /**
      * @param Type\Handler $handler
      * @param Object $object
-     * @param mixed $data
-     * @param string attribute
+     * @param array $data
+     * @param string $attribute
      *
      * @return mixed
      */

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Blackprism\Serializer;
 
+use Blackprism\Serializer\Exception\InvalidDeserializedValue;
+use Blackprism\Serializer\Exception\InvalidSerializedValue;
+
 /**
  * SerializerInterface
  */
