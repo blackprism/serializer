@@ -117,11 +117,10 @@ class Json implements SerializerInterface
         if ($objectType->isCollection() === true) {
             $objects = $this->processDeserializeTypeObjectCollection($objectType, $value);
             $object->{$objectType->setter()}($objects);
-        } else {
-            $object->{$objectType->setter()}(
-                $this->setObject($objectType->className(), $value)
-            );
+            return $this;
         }
+
+        $object->{$objectType->setter()}($this->setObject($objectType->className(), $value));
 
         return $this;
     }
@@ -251,12 +250,10 @@ class Json implements SerializerInterface
     private function processSerializeTypeObject(Type\Object $objectType, $object, $data, string $attribute)
     {
         if ($objectType->isCollection() === true) {
-            $data = $this->processSerializeTypeObjectCollection($objectType, $object, $data, $attribute);
-        } else {
-            $data = $this->setArrayAndCheckNull($data, $object->{$objectType->getter()}(), $attribute);
+            return $this->processSerializeTypeObjectCollection($objectType, $object, $data, $attribute);
         }
 
-        return $data;
+        return $this->setArrayAndCheckNull($data, $object->{$objectType->getter()}(), $attribute);
     }
 
     /**
