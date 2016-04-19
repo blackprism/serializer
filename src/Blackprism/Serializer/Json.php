@@ -34,12 +34,12 @@ class Json implements SerializerInterface
      * Deserialize string with class as the root object
      *
      * @param string $serialized
-     * @param ClassName $class
+     * @param ClassName $className
      *
      * @return Object
      * @throws InvalidJson
      */
-    public function deserialize(string $serialized, ClassName $class)
+    public function deserialize(string $serialized, ClassName $className)
     {
         $objectsAsArray = json_decode($serialized, true);
 
@@ -47,27 +47,27 @@ class Json implements SerializerInterface
             throw new InvalidJson(json_last_error_msg());
         }
 
-        return $this->setObject($class, $objectsAsArray);
+        return $this->setObject($className, $objectsAsArray);
     }
 
     /**
      * Create class object with data
      *
-     * @param ClassName $class
+     * @param ClassName $className
      * @param array $data
      *
      * @return Object
      */
-    private function setObject(ClassName $class, array $data)
+    private function setObject(ClassName $className, array $data)
     {
-        $object = $class->buildObject();
+        $object = $className->buildObject();
 
         /**
          * @var string $attribute
          * @var mixed $value
          */
         foreach ($data as $attribute => $value) {
-            $configurationObject = $this->configuration->getConfigurationObjectForClass($class);
+            $configurationObject = $this->configuration->getConfigurationObjectForClass($className);
             $type = $configurationObject->getTypeForAttribute($attribute);
 
             $this->processDeserializeForType($type, $object, $value);
@@ -265,8 +265,12 @@ class Json implements SerializerInterface
      *
      * @return array
      */
-    private function processSerializeTypeObjectCollection(Type\Object $objectType, $object, array $data, string $attribute)
-    {
+    private function processSerializeTypeObjectCollection(
+        Type\Object $objectType,
+        $object,
+        array $data,
+        string $attribute
+    ) {
         foreach ($object->{$objectType->getter()}() as $key => $subObject) {
             $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
         }

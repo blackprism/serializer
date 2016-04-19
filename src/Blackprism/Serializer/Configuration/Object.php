@@ -13,7 +13,7 @@ use Blackprism\Serializer\Value\ClassName;
 /**
  * Object
  *
- * @property string $className
+ * @property ClassName $className
  * @property Type[string] $attributes
  * @property Blackhole $blackhole
  */
@@ -21,7 +21,7 @@ final class Object implements ObjectInterface
 {
 
     /**
-     * @var string
+     * @var ClassName
      */
     private $className;
 
@@ -36,9 +36,9 @@ final class Object implements ObjectInterface
     private $blackhole;
 
     /**
-     * @param string $className
+     * @param ClassName $className
      */
-    public function __construct(string $className)
+    public function __construct(ClassName $className)
     {
         $this->className = $className;
         $this->blackhole = new Blackhole();

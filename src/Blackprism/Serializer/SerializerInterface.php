@@ -18,12 +18,12 @@ interface SerializerInterface
      * Deserialize with class name as root
      *
      * @param string $serialized
-     * @param ClassName $class
+     * @param ClassName $className
      *
      * @return Object
      * @throws InvalidSerializedValue
      */
-    public function deserialize(string $serialized, ClassName $class);
+    public function deserialize(string $serialized, ClassName $className);
 
     /**
      * Serialize with class name as root

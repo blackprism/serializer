@@ -30,19 +30,19 @@ interface ObjectInterface
      * Serialize/Deserialize attribute as an object
      *
      * @param string $attribute
-     * @param ClassName $class
+     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      *
      * @return ObjectInterface
      */
-    public function attributeUseObject(string $attribute, ClassName $class, string $setter, string $getter): self;
+    public function attributeUseObject(string $attribute, ClassName $className, string $setter, string $getter): self;
 
     /**
      * Serialize/Deserialize attribute as an collection of objects
      *
      * @param string $attribute
-     * @param ClassName $class
+     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      *
@@ -50,7 +50,7 @@ interface ObjectInterface
      */
     public function attributeUseCollectionObject(
         string $attribute,
-        ClassName $class,
+        ClassName $className,
         string $setter,
         string $getter
     ): self;

@@ -5,15 +5,20 @@ use Blackprism\Serializer\Value\ClassName;
 
 $configuration = new Configuration();
 
-$configurationObject = new Configuration\Object(Blackprism\Demo\Entity\City::class);
+$configurationObject = new Configuration\Object(new ClassName(Blackprism\Demo\Entity\City::class));
 $configurationObject
     ->attributeUseMethod('id', 'setId', 'getId')
     ->attributeUseMethod('name', 'setName', 'getName')
     ->attributeUseObject('country', new ClassName(Blackprism\Demo\Entity\Country::class), 'countryIs', 'getCountry')
-    ->attributeUseCollectionObject('countries', new ClassName(Blackprism\Demo\Entity\Country::class), 'countriesAre', 'getCountries')
+    ->attributeUseCollectionObject(
+        'countries',
+        new ClassName(Blackprism\Demo\Entity\Country::class),
+        'countriesAre',
+        'getCountries'
+    )
     ->registerToConfiguration($configuration);
 
-$configurationObject = new Configuration\Object(Blackprism\Demo\Entity\Country::class);
+$configurationObject = new Configuration\Object(new ClassName(Blackprism\Demo\Entity\Country::class));
 $configurationObject
     ->attributeUseMethod('code', 'setCode', 'getCode')
     ->attributeUseHandler(

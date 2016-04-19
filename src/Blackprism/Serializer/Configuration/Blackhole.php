@@ -28,7 +28,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param ClassName $class
+     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      *
@@ -36,7 +36,7 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseObject(
         string $attribute,
-        ClassName $class,
+        ClassName $className,
         string $setter,
         string $getter
     ): ObjectInterface {
@@ -45,7 +45,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param ClassName $class
+     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      *
@@ -53,7 +53,7 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseCollectionObject(
         string $attribute,
-        ClassName $class,
+        ClassName $className,
         string $setter,
         string $getter
     ): ObjectInterface {

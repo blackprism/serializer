@@ -21,26 +21,27 @@ final class Configuration
     private $objects;
 
     /**
-     * @param string $class
+     * @param ClassName $className
      * @param ObjectInterface $configurationObject
      *
      * @return Configuration
      */
-    public function addConfigurationObject(string $class, ObjectInterface $configurationObject): self
+    public function addConfigurationObject(ClassName $className, ObjectInterface $configurationObject): self
     {
-        $this->objects[$class] = $configurationObject;
+        $this->objects[$className->getIdentifier()] = $configurationObject;
+
         return $this;
     }
 
     /**
-     * @param ClassName $class
+     * @param ClassName $className
      *
      * @return ObjectInterface
      */
-    public function getConfigurationObjectForClass(ClassName $class): ObjectInterface
+    public function getConfigurationObjectForClass(ClassName $className): ObjectInterface
     {
-        if (isset($this->objects[$class->getIdentifier()]) === true) {
-            return $this->objects[$class->getIdentifier()];
+        if (isset($this->objects[$className->getIdentifier()]) === true) {
+            return $this->objects[$className->getIdentifier()];
         }
 
         return new Blackhole();
