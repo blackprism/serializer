@@ -11,16 +11,17 @@ use Blackprism\Serializer\Value\ClassName;
 /**
  * SerializerInterface
  */
-interface SerializerInterface
+interface DeserializerInterface
 {
 
     /**
-     * Serialize with class name as root
+     * Deserialize with class name as root
      *
-     * @param Object $object
+     * @param string $serialized
+     * @param ClassName $className
      *
-     * @return string
-     * @throws InvalidDeserializedValue
+     * @return Object
+     * @throws InvalidSerializedValue
      */
-    public function serialize($object): string;
+    public function deserialize(string $serialized, ClassName $className);
 }

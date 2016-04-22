@@ -54,11 +54,12 @@ $json = json_encode(
 $start = microtime(true);
 
 for ($i = 0; $i < 10000; $i++) {
-    $jsonSerializer = new \Blackprism\Serializer\Json($configuration);
-    $city = $jsonSerializer->deserialize($json, new \Blackprism\Serializer\Value\ClassName(\Blackprism\Demo\Entity\City::class));
+    $jsonDeserializer = new \Blackprism\Serializer\Json\Deserialize($configuration);
+    $city = $jsonDeserializer->deserialize($json, new \Blackprism\Serializer\Value\ClassName(\Blackprism\Demo\Entity\City::class));
 }
 $end = microtime(true);
 
+$jsonSerializer = new \Blackprism\Serializer\Json\Serialize($configuration);
 $jsonSerializer->serialize($city);
 
 var_dump($city);
