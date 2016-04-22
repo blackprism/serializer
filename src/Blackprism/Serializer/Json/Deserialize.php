@@ -60,7 +60,8 @@ class Deserialize implements DeserializerInterface
      */
     private function setObject(ClassName $className, array $data)
     {
-        $object = $className->buildObject();
+        $fqdnClass = $className->getValue();
+        $object = new $fqdnClass();
 
         /**
          * @var string $attribute

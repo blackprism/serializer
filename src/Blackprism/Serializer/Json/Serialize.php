@@ -157,6 +157,7 @@ class Serialize implements SerializerInterface
      * @param array $data
      * @param Object $object
      * @param string $attribute
+     *
      * @return array
      */
     private function setArrayAndCheckNull($data, $object, $attribute)
@@ -175,6 +176,7 @@ class Serialize implements SerializerInterface
      * @param Object $object
      * @param mixed $key
      * @param string $attribute
+     *
      * @return array
      */
     private function setArrayAndCheckNullWithKey($data, $object, $key, $attribute)

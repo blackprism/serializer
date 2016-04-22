@@ -24,11 +24,11 @@ class ClassName
     }
 
     /**
-     * @return Object
+     * @return string
      */
-    public function buildObject()
+    public function getValue()
     {
-        return new $this->className;
+        return $this->className;
     }
 
     /**
