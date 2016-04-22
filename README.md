@@ -117,22 +117,13 @@ print_r($city);
 
 Output is :
 ```php
-class City#18 (2) {
+class City {
   private $name =>
-  string(9) "Palaiseau"
+    string(9) "Palaiseau"
   private $country =>
-  class Country#19 (1) {
-    private $name =>
-    string(6) "France"
-  }
-}
-
-  private $name =>
-  string(9) "Palaiseau"
-  private $country =>
-  class Country#19 (1) {
-    private $name =>
-    string(6) "France"
-  }
+      class Country {
+        private $name =>
+        string(6) "France"
+      }
 }
 ```
