@@ -9,8 +9,14 @@ namespace Blackprism\Serializer\Value;
  *
  * @property string $className
  */
-class ClassName
+final class ClassName
 {
+
+    /**
+     * @var string
+     */
+    private $className;
+
     /**
      * @param string $className
      */
