@@ -117,7 +117,7 @@ print_r($city);
 
 Output is :
 ```php
-class City#18 (2) {class City#18 (2) {
+class City#18 (2) {
   private $name =>
   string(9) "Palaiseau"
   private $country =>
