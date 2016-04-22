@@ -59,7 +59,7 @@ class Serialize implements SerializerInterface
      *
      * @param Object $object
      *
-     * @return array
+     * @return mixed[string]
      */
     private function setArray($object): array
     {
@@ -78,12 +78,12 @@ class Serialize implements SerializerInterface
     /**
      * @param Type $type
      * @param Object $object
-     * @param array $data
+     * @param mixed[string] $data
      * @param ObjectInterface $attribute
      *
-     * @return array
+     * @return mixed[string]
      */
-    private function processSerializeForType(Type $type, $object, $data, $attribute)
+    private function processSerializeForType(Type $type, $object, array $data, $attribute): array
     {
         if ($type instanceof Type\Method) {
             $data = $this->processSerializeTypeMethod($type, $object, $data, $attribute);
@@ -99,12 +99,12 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Method $method
      * @param Object $object
-     * @param array $data
+     * @param mixed[string] $data
      * @param string $attribute
      *
-     * @return mixed
+     * @return mixed[string]
      */
-    private function processSerializeTypeMethod(Type\Method $method, $object, $data, string $attribute)
+    private function processSerializeTypeMethod(Type\Method $method, $object, array $data, string $attribute): array
     {
         $value = $object->{$method->getter()}();
 
@@ -118,12 +118,12 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Object $objectType
      * @param Object $object
-     * @param array $data
+     * @param mixed[string] $data
      * @param string $attribute
      *
-     * @return array
+     * @return mixed[string]
      */
-    private function processSerializeTypeObject(Type\Object $objectType, $object, $data, string $attribute)
+    private function processSerializeTypeObject(Type\Object $objectType, $object, array $data, string $attribute): array
     {
         if ($objectType->isCollection() === true) {
             return $this->processSerializeTypeObjectCollection($objectType, $object, $data, $attribute);
@@ -135,17 +135,17 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Object $objectType
      * @param Object $object
-     * @param array $data
+     * @param mixed[string] $data
      * @param string $attribute
      *
-     * @return array
+     * @return mixed[string]
      */
     private function processSerializeTypeObjectCollection(
         Type\Object $objectType,
         $object,
         array $data,
         string $attribute
-    ) {
+    ): array {
         foreach ($object->{$objectType->getter()}() as $key => $subObject) {
             $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
         }
@@ -154,13 +154,13 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param array $data
+     * @param mixed[string] $data
      * @param Object $object
      * @param string $attribute
      *
-     * @return array
+     * @return mixed[string]
      */
-    private function setArrayAndCheckNull($data, $object, $attribute)
+    private function setArrayAndCheckNull(array $data, $object, $attribute): array
     {
         $value = $this->setArray($object);
 
@@ -172,14 +172,14 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param array $data
+     * @param mixed[string] $data
      * @param Object $object
      * @param mixed $key
      * @param string $attribute
      *
-     * @return array
+     * @return mixed[string]
      */
-    private function setArrayAndCheckNullWithKey($data, $object, $key, $attribute)
+    private function setArrayAndCheckNullWithKey(array $data, $object, $key, $attribute): array
     {
         $value = $this->setArray($object);
 
@@ -193,12 +193,12 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Handler $handler
      * @param Object $object
-     * @param array $data
+     * @param mixed[string] $data
      * @param string $attribute
      *
-     * @return mixed
+     * @return mixed[string]
      */
-    private function processSerializeTypeHandler(Type\Handler $handler, $object, $data, string $attribute)
+    private function processSerializeTypeHandler(Type\Handler $handler, $object, array $data, string $attribute): array
     {
         $value = $handler->serializer()->serialize($object);
 

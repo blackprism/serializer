@@ -54,7 +54,7 @@ class Deserialize implements DeserializerInterface
      * Create class object with data
      *
      * @param ClassName $className
-     * @param array $data
+     * @param mixed[string] $data
      *
      * @return Object
      */
