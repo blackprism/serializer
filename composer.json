@@ -13,12 +13,12 @@
         "phing/phing": "^2.0",
         "phpmd/phpmd": "^2.0",
         "sebastian/phpcpd": "^2.0",
-        "squizlabs/php_codesniffer": "^2.0"
+        "squizlabs/php_codesniffer": "^2.0",
+        "atoum/atoum": "^2.6"
     },
     "autoload": {
         "psr-4" : {
-            "Blackprism\\Serializer\\": "src/Blackprism/Serializer/",
-            "Blackprism\\Demo\\": "src/Blackprism/Demo/"
+            "Blackprism\\Serializer\\": "src/Blackprism/Serializer/"
         }
     }
 }
