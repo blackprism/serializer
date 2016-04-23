@@ -138,7 +138,7 @@ $configurationObject
     ->attributeUseMethod('name', 'setName', 'getName')
     ->attributeUseHandler(
 		'country',
-		new class implements Configuration\Type\HandlerDeserializer {
+		new class implements Configuration\Type\HandlerDeserializerInterface {
             public function deserialize($object, $value)
             {
                 $country = new Country();
@@ -147,7 +147,7 @@ $configurationObject
                 $object->setName($object->getName() . ' (' . $country->getName() . ')');
             }
         },
-        new class implements Configuration\Type\HandlerSerializer {
+        new class implements Configuration\Type\HandlerSerializerInterface {
             public function serialize($object)
             {
                 $country = $object->getCountry();

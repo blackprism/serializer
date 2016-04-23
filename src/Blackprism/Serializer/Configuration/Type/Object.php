@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blackprism\Serializer\Configuration\Type;
 
-use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Configuration\TypeInterface;
 use Blackprism\Serializer\Value\ClassName;
 
 /**
@@ -15,7 +15,7 @@ use Blackprism\Serializer\Value\ClassName;
  * @property string $getter
  * @property bool $collection
  */
-final class Object implements Type
+final class Object implements TypeInterface
 {
     /**
      * @var ClassName

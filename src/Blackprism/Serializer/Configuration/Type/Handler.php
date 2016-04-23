@@ -4,48 +4,48 @@ declare(strict_types=1);
 
 namespace Blackprism\Serializer\Configuration\Type;
 
-use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Configuration\TypeInterface;
 
 /**
  * Handler
  *
- * @property HandlerDeserializer $deserializer
- * @property HandlerSerializer $serializer
+ * @property HandlerDeserializerInterface $deserializer
+ * @property HandlerSerializerInterface $serializer
  */
-final class Handler implements Type
+final class Handler implements TypeInterface
 {
     /**
-     * @var HandlerDeserializer
+     * @var HandlerDeserializerInterface
      */
     private $deserializer;
 
     /**
-     * @var HandlerSerializer
+     * @var HandlerSerializerInterface
      */
     private $serializer;
 
     /**
-     * @param HandlerDeserializer $deserializer
-     * @param HandlerSerializer $serializer
+     * @param HandlerDeserializerInterface $deserializer
+     * @param HandlerSerializerInterface $serializer
      */
-    public function __construct(HandlerDeserializer $deserializer, HandlerSerializer $serializer)
+    public function __construct(HandlerDeserializerInterface $deserializer, HandlerSerializerInterface $serializer)
     {
         $this->deserializer = $deserializer;
         $this->serializer = $serializer;
     }
 
     /**
-     * @return HandlerDeserializer
+     * @return HandlerDeserializerInterface
      */
-    public function deserializer(): HandlerDeserializer
+    public function deserializer(): HandlerDeserializerInterface
     {
         return $this->deserializer;
     }
 
     /**
-     * @return HandlerSerializer
+     * @return HandlerSerializerInterface
      */
-    public function serializer(): HandlerSerializer
+    public function serializer(): HandlerSerializerInterface
     {
         return $this->serializer;
     }

@@ -6,15 +6,15 @@ namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type\Blackhole;
-use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
-use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
+use Blackprism\Serializer\Configuration\Type\HandlerDeserializerInterface;
+use Blackprism\Serializer\Configuration\Type\HandlerSerializerInterface;
 use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Object
  *
  * @property ClassName $className
- * @property Type[string] $attributes
+ * @property TypeInterface[string] $attributes
  * @property Blackhole $blackhole
  */
 final class Object implements ObjectInterface
@@ -26,7 +26,7 @@ final class Object implements ObjectInterface
     private $className;
 
     /**
-     * @var Type[string]
+     * @var TypeInterface[string]
      */
     private $attributes = [];
 
@@ -98,15 +98,15 @@ final class Object implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param HandlerDeserializer $deserialize
-     * @param HandlerSerializer $serialize
+     * @param HandlerDeserializerInterface $deserialize
+     * @param HandlerSerializerInterface $serialize
      *
      * @return ObjectInterface
      */
     public function attributeUseHandler(
         string $attribute,
-        HandlerDeserializer $deserialize,
-        HandlerSerializer $serialize
+        HandlerDeserializerInterface $deserialize,
+        HandlerSerializerInterface $serialize
     ): ObjectInterface {
         $this->attributes[$attribute] = new Configuration\Type\Handler($deserialize, $serialize);
 
@@ -128,9 +128,9 @@ final class Object implements ObjectInterface
     /**
      * @param string $attribute
      *
-     * @return Type
+     * @return TypeInterface
      */
-    public function getTypeForAttribute(string $attribute): Type
+    public function getTypeForAttribute(string $attribute): TypeInterface
     {
         if (isset($this->attributes[$attribute]) === false) {
             return $this->blackhole;

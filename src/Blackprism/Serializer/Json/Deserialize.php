@@ -78,11 +78,11 @@ class Deserialize implements DeserializerInterface
     }
 
     /**
-     * @param Type $type
+     * @param Configuration\TypeInterface $type
      * @param Object $object
      * @param mixed $value
      */
-    private function processDeserializeForType(Type $type, $object, $value)
+    private function processDeserializeForType(Configuration\TypeInterface $type, $object, $value)
     {
         if ($type instanceof Type\Method) {
             $this->processDeserializeTypeMethod($type, $object, $value);

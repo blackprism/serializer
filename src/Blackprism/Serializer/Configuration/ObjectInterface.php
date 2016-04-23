@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
-use Blackprism\Serializer\Configuration\Type\HandlerDeserializer;
-use Blackprism\Serializer\Configuration\Type\HandlerSerializer;
+use Blackprism\Serializer\Configuration\Type\HandlerDeserializerInterface;
+use Blackprism\Serializer\Configuration\Type\HandlerSerializerInterface;
 use Blackprism\Serializer\Value\ClassName;
 
 /**
@@ -59,15 +59,15 @@ interface ObjectInterface
      * Serialize/Deserialize attribute via callable
      *
      * @param string $attribute
-     * @param HandlerDeserializer $deserialize
-     * @param HandlerSerializer $serialize
+     * @param HandlerDeserializerInterface $deserialize
+     * @param HandlerSerializerInterface $serialize
      *
      * @return ObjectInterface
      */
     public function attributeUseHandler(
         string $attribute,
-        HandlerDeserializer $deserialize,
-        HandlerSerializer $serialize
+        HandlerDeserializerInterface $deserialize,
+        HandlerSerializerInterface $serialize
     ): self;
 
     /**
@@ -84,9 +84,9 @@ interface ObjectInterface
      *
      * @param string $attribute
      *
-     * @return Type
+     * @return TypeInterface
      */
-    public function getTypeForAttribute(string $attribute): Type;
+    public function getTypeForAttribute(string $attribute): TypeInterface;
 
     /**
      * Retrieve attributes

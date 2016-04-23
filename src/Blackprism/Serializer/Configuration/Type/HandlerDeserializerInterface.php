@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Configuration\Type;
 
 /**
- * HandlerDeserializer
+ * HandlerDeserializerInterface
  */
-interface HandlerDeserializer
+interface HandlerDeserializerInterface
 {
     /**
      * @param Object $object

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blackprism\Serializer\Configuration\Type;
 
-use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Configuration\TypeInterface;
 
 /**
  * Method
@@ -12,7 +12,7 @@ use Blackprism\Serializer\Configuration\Type;
  * @property string $setter
  * @property string $getter
  */
-final class Method implements Type
+final class Method implements TypeInterface
 {
     /**
      * @var string

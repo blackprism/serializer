@@ -76,14 +76,14 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param Type $type
+     * @param Configuration\TypeInterface $type
      * @param Object $object
      * @param mixed[string] $data
      * @param ObjectInterface $attribute
      *
      * @return mixed[string]
      */
-    private function processSerializeForType(Type $type, $object, array $data, $attribute): array
+    private function processSerializeForType(Configuration\TypeInterface $type, $object, array $data, $attribute): array
     {
         if ($type instanceof Type\Method) {
             $data = $this->processSerializeTypeMethod($type, $object, $data, $attribute);

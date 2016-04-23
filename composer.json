@@ -1,5 +1,7 @@
 {
     "name": "blackprism/serializer",
+    "description": "Fast and simple json serializer library",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Sylvain Robez-Masson",
