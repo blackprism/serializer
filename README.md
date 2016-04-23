@@ -52,6 +52,7 @@ class Country
 
 First you need to setup the configuration, pure PHP, no yml, no xml.
 Faster and lighter.
+
 ```php
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Value\ClassName;
@@ -71,7 +72,8 @@ $configurationObject
 
 ```
 
-### Now, you can serialize an object.
+### Now, you can serialize an object
+
 ```php
 use Blackprism\Serializer\Json;
 
@@ -88,7 +90,7 @@ $citySerialized = $jsonSerializer->serialize($city);
 echo $citySerialized;
 ```
 
-Output is :
+Output is:
 ```json
 {
   "name": "Palaiseau",
@@ -98,7 +100,7 @@ Output is :
 }
 ```
 
-### And unserialize a json.
+### And unserialize a json
 ```php
 use Blackprism\Serializer\Json;
 
@@ -115,7 +117,7 @@ $city = $jsonDeserializer->deserialize($json, new ClassName(City::class));
 print_r($city);
 ```
 
-Output is :
+Output is:
 ```php
 class City {
   private $name =>
@@ -127,3 +129,44 @@ class City {
       }
 }
 ```
+
+## Custom handler
+
+From previous sample, you change a bit the configuration to this:
+```php
+$configurationObject
+    ->attributeUseMethod('name', 'setName', 'getName')
+    ->attributeUseHandler(
+		'country',
+		new class implements Configuration\Type\HandlerDeserializer {
+            public function deserialize($object, $value)
+            {
+                $country = new Country();
+                $country->setName($value['name']);
+                $object->countryIs($country);
+                $object->setName($object->getName() . ' (' . $country->getName() . ')');
+            }
+        },
+        new class implements Configuration\Type\HandlerSerializer {
+            public function serialize($object)
+            {
+                $country = $object->getCountry();
+                return  $country->getName() . '#' . spl_object_hash($country);
+            }
+        }
+	);
+```
+
+## Benchmark
+
+Library               | Serialize time | Serialize memory | Deserialize time | Deserialize Memory
+----------------------|----------------|------------------|------------------|-------------------
+       JMS Serializer |      1.951 sec |          1537 KB |        1.829 sec |            1547 KB
+Symfony Serializer    |      0.210 sec |           486 KB |        0.298 sec |             488 KB
+Blackprism Serializer |      0.352 sec |           464 KB |        0.311 sec |             457 KB
+
+Test protocol can be found on [Serializer Benchmark](https://github.com/blackprism/serializer-benchmark)
+
+## Conclusion
+
+As you can see, Blackprism Serializer isn't really the fastest, but it has a quick and simple configuration with very good performance, almost the same as Symfony Serializer which has a more complex configuration.
