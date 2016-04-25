@@ -159,6 +159,8 @@ $configurationObject
 
 ## Benchmark
 
+For 100,000 iterations :
+
 Library               | Serialize time | Serialize memory | Deserialize time | Deserialize Memory
 ----------------------|----------------|------------------|------------------|-------------------
        JMS Serializer |      1.951 sec |          1537 KB |        1.829 sec |            1547 KB
