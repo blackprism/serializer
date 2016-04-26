@@ -1,6 +1,6 @@
 language: php
 php:
   - '7.0'
-before_script: wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
+before_script: composer install
 script:
   - ./vendor/bin/phing test
