@@ -10,7 +10,7 @@ namespace Blackprism\Serializer\Configuration\Type;
 interface HandlerSerializerInterface
 {
     /**
-     * @param Object $object
+     * @param object $object
      *
      * @return mixed
      */

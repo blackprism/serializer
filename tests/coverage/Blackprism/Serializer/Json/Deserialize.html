@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Language" content="en" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Blackprism Serializer : code coverage of Blackprism\Serializer\Json\Deserialize</title>
+		<link rel="stylesheet" media="screen" type="text/css" href="../../../screen.css" title="Screen" />
+	</head>
+	<body>
+		<div id="header">
+			<h1>Code coverage of <a href="../../../index.html">Blackprism Serializer</a>: Blackprism\Serializer\Json\Deserialize</h1>
+			<h2>Class code coverage <span>97.06%</span></h2>
+		</div>
+		<div id="page">
+			<div id="content">
+				<h3>Methods</h3>
+				<ul class="summary">
+					
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#__construct">__construct</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#deserialize">deserialize</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#setObject">setObject</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 85.71%"></div>
+										<div class="label">
+											<span class="percent">85.71%</span>
+											<a href="#processDeserializeForType">processDeserializeForType</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#processDeserializeTypeMethod">processDeserializeTypeMethod</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#processDeserializeTypeObject">processDeserializeTypeObject</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#processDeserializeTypeObjectCollection">processDeserializeTypeObjectCollection</a>
+										</div>
+									</div>
+								
+							</li>
+						
+							<li>
+								
+								
+									<div class="bar">
+										<div class="background"></div>
+										<div class="graph" style="width: 100%"></div>
+										<div class="label">
+											<span class="percent">100%</span>
+											<a href="#processDeserializeTypeHandler">processDeserializeTypeHandler</a>
+										</div>
+									</div>
+								
+							</li>
+						
+					
+				</ul>
+				<h3>Source</h3>
+				<table cellpadding="0" cellspacing="0" class="source">
+					<tr><th class="number">Line</th><th>Code</th></tr>
+					<tr><td class="number"><a name="isCollection"></a>1</td><td><pre>&lt;?php
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>2</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>3</td><td><pre>declare(strict_types=1);
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>4</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>5</td><td><pre>namespace Blackprism\Serializer\Json;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>6</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>7</td><td><pre>use Blackprism\Serializer\Configuration;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>8</td><td><pre>use Blackprism\Serializer\Configuration\Type;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>9</td><td><pre>use Blackprism\Serializer\DeserializerInterface;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>10</td><td><pre>use Blackprism\Serializer\Exception\InvalidJson;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>11</td><td><pre>use Blackprism\Serializer\Value\ClassName;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>12</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>13</td><td><pre>/**
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>14</td><td><pre> * Deserialize
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>15</td><td><pre> *
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>16</td><td><pre> * @property Configuration $configuration
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>17</td><td><pre> */
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>18</td><td><pre>class Deserialize implements DeserializerInterface
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>19</td><td><pre>{
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>20</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>21</td><td><pre>     * @var Configuration
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>22</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>23</td><td><pre>    private $configuration;
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>24</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>25</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>26</td><td><pre>     * @param Configuration $configuration
+</pre></td></tr><tr><td class="number"><a name="isCollection"></a>27</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>28</td><td><pre>    public function __construct(Configuration $configuration)
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>29</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">30</td><td><pre>        $this-&gt;configuration = $configuration;
+</pre></td></tr><tr class="covered"><td class="number">31</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>32</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>33</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>34</td><td><pre>     * Deserialize string with class as the root object
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>35</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>36</td><td><pre>     * @param string $serialized
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>37</td><td><pre>     * @param ClassName $className
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>38</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>39</td><td><pre>     * @return object
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>40</td><td><pre>     * @throws InvalidJson
+</pre></td></tr><tr><td class="number"><a name="__construct"></a>41</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>42</td><td><pre>    public function deserialize(string $serialized, ClassName $className)
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>43</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">44</td><td><pre>        $objectsAsArray = json_decode($serialized, true);
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>45</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">46</td><td><pre>        if (json_last_error() !== JSON_ERROR_NONE) {
+</pre></td></tr><tr class="covered"><td class="number">47</td><td><pre>            throw new InvalidJson(json_last_error_msg());
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>48</td><td><pre>        }
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>49</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">50</td><td><pre>        return $this-&gt;setObject($className, $objectsAsArray);
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>51</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>52</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>53</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>54</td><td><pre>     * Create class object with data
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>55</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>56</td><td><pre>     * @param ClassName $className
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>57</td><td><pre>     * @param mixed[string] $data
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>58</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>59</td><td><pre>     * @return object
+</pre></td></tr><tr><td class="number"><a name="deserialize"></a>60</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>61</td><td><pre>    private function setObject(ClassName $className, array $data)
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>62</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">63</td><td><pre>        $fqdnClass = $className-&gt;getValue();
+</pre></td></tr><tr class="covered"><td class="number">64</td><td><pre>        $object = new $fqdnClass();
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>65</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>66</td><td><pre>        /**
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>67</td><td><pre>         * @var string $attribute
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>68</td><td><pre>         * @var mixed $value
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>69</td><td><pre>         */
+</pre></td></tr><tr class="covered"><td class="number">70</td><td><pre>        foreach ($data as $attribute =&gt; $value) {
+</pre></td></tr><tr class="covered"><td class="number">71</td><td><pre>            $configurationObject = $this-&gt;configuration-&gt;getConfigurationObjectForClass($className);
+</pre></td></tr><tr class="covered"><td class="number">72</td><td><pre>            $type = $configurationObject-&gt;getTypeForAttribute($attribute);
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>73</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">74</td><td><pre>            $this-&gt;processDeserializeForType($type, $object, $value);
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>75</td><td><pre>        }
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>76</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">77</td><td><pre>        return $object;
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>78</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>79</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>80</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>81</td><td><pre>     * @param Configuration\TypeInterface $type
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>82</td><td><pre>     * @param object $object
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>83</td><td><pre>     * @param mixed $value
+</pre></td></tr><tr><td class="number"><a name="setObject"></a>84</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>85</td><td><pre>    private function processDeserializeForType(Configuration\TypeInterface $type, $object, $value)
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>86</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">87</td><td><pre>        if ($type instanceof Type\Method) {
+</pre></td></tr><tr class="covered"><td class="number">88</td><td><pre>            $this-&gt;processDeserializeTypeMethod($type, $object, $value);
+</pre></td></tr><tr class="covered"><td class="number">89</td><td><pre>        } elseif ($type instanceof Type\Object) {
+</pre></td></tr><tr class="covered"><td class="number">90</td><td><pre>            $this-&gt;processDeserializeTypeObject($type, $object, $value);
+</pre></td></tr><tr class="notCovered"><td class="number">91</td><td><pre>        } elseif ($type instanceof Type\Handler) {
+</pre></td></tr><tr class="covered"><td class="number">92</td><td><pre>            $this-&gt;processDeserializeTypeHandler($type, $object, $value);
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>93</td><td><pre>        }
+</pre></td></tr><tr class="covered"><td class="number">94</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>95</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>96</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>97</td><td><pre>     * @param Type\Method $method
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>98</td><td><pre>     * @param object $object
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>99</td><td><pre>     * @param mixed $value
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>100</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>101</td><td><pre>     * @return Deserialize
+</pre></td></tr><tr><td class="number"><a name="processDeserializeForType"></a>102</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>103</td><td><pre>    private function processDeserializeTypeMethod(Type\Method $method, $object, $value): self
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>104</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">105</td><td><pre>        $object-&gt;{$method-&gt;setter()}($value);
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>106</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">107</td><td><pre>        return $this;
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>108</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>109</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>110</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>111</td><td><pre>     * @param Type\Object $objectType
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>112</td><td><pre>     * @param object $object
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>113</td><td><pre>     * @param mixed $value
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>114</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>115</td><td><pre>     * @return Deserialize
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeMethod"></a>116</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>117</td><td><pre>    private function processDeserializeTypeObject(Type\Object $objectType, $object, $value): self
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>118</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">119</td><td><pre>        if ($objectType-&gt;isCollection() === true) {
+</pre></td></tr><tr class="covered"><td class="number">120</td><td><pre>            $objects = $this-&gt;processDeserializeTypeObjectCollection($objectType, $value);
+</pre></td></tr><tr class="covered"><td class="number">121</td><td><pre>            $object-&gt;{$objectType-&gt;setter()}($objects);
+</pre></td></tr><tr class="covered"><td class="number">122</td><td><pre>            return $this;
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>123</td><td><pre>        }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>124</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">125</td><td><pre>        $object-&gt;{$objectType-&gt;setter()}($this-&gt;setObject($objectType-&gt;className(), $value));
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>126</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">127</td><td><pre>        return $this;
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>128</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>129</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>130</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>131</td><td><pre>     * @param Type\Object $objectType
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>132</td><td><pre>     * @param array $values
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>133</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>134</td><td><pre>     * @return object[]
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObject"></a>135</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>136</td><td><pre>    private function processDeserializeTypeObjectCollection(Type\Object $objectType, array $values)
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>137</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">138</td><td><pre>        $objects = [];
+</pre></td></tr><tr class="covered"><td class="number">139</td><td><pre>        foreach ($values as $key =&gt; $object) {
+</pre></td></tr><tr class="covered"><td class="number">140</td><td><pre>            $objects[$key] = $this-&gt;setObject($objectType-&gt;className(), $object);
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>141</td><td><pre>        }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>142</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">143</td><td><pre>        return $objects;
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>144</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>145</td><td><pre>
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>146</td><td><pre>    /**
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>147</td><td><pre>     * @param Type\Handler $handler
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>148</td><td><pre>     * @param object $object
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>149</td><td><pre>     * @param mixed $value
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>150</td><td><pre>     *
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>151</td><td><pre>     * @return Deserialize
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeObjectCollection"></a>152</td><td><pre>     */
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeHandler"></a>153</td><td><pre>    private function processDeserializeTypeHandler(Type\Handler $handler, $object, $value): self
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeHandler"></a>154</td><td><pre>    {
+</pre></td></tr><tr class="covered"><td class="number">155</td><td><pre>        $handler-&gt;deserializer()-&gt;deserialize($object, $value);
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeHandler"></a>156</td><td><pre>
+</pre></td></tr><tr class="covered"><td class="number">157</td><td><pre>        return $this;
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeHandler"></a>158</td><td><pre>    }
+</pre></td></tr><tr><td class="number"><a name="processDeserializeTypeHandler"></a>159</td><td><pre>}
+</pre></td></tr>
+				</table>
+			</div>
+		</div>
+		<div id="footer">
+			<p>Code coverage report powered by <a href="http://atoum.org">atoum</a></p>
+		</div>
+	</body>
+</html>

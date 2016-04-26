@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Bouh\Serializer" default="all">
+<project name="Blackprism Serializer" default="all">
+    <taskdef name="atoum" classpath="./vendor/atoum/atoum/resources/phing/" classname="AtoumTask"/>
+
+    <property name="fullpath" value="./" />
+    <resolvepath propertyName="fullpath" file="${fullpath}"/>
+
     <target name="all">
         <phingcall target="phpcs" />
         <phingcall target="phplint" />
         <phingcall target="phpmd" />
+        <phingcall target="test" />
     </target>
 
     <target name="phpcs">
@@ -35,5 +41,23 @@
                 <include name="**/*.php" />
             </fileset>
         </phpmd>
+    </target>
+
+    <target name="test">
+        <atoum
+                atoumpharpath="./vendor/bin/atoum"
+                bootstrap="./vendor/autoload.php"
+                codecoverage="true"
+                codecoveragereportpath="./tests/coverage/"
+                codecoveragereporturl="file://${fullpath}/tests/coverage/index.html"
+                showcodecoverage="true"
+                showmissingcodecoverage="true"
+                showprogress="true"
+                showmemory="true"
+                showduration="true">
+            <fileset dir="./tests/units">
+                <include name="**/*.php" />
+            </fileset>
+        </atoum>
     </target>
 </project>

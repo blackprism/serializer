@@ -16,11 +16,17 @@
         "phpmd/phpmd": "^2.0",
         "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^2.0",
-        "atoum/atoum": "^2.6"
+        "atoum/atoum": "^2.6",
+        "atoum/stubs": "^2.5"
     },
     "autoload": {
-        "psr-4" : {
+        "psr-4": {
             "Blackprism\\Serializer\\": "src/Blackprism/Serializer/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests/"
         }
     }
 }

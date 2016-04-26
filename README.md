@@ -151,7 +151,7 @@ $configurationObject
             public function serialize($object)
             {
                 $country = $object->getCountry();
-                return  $country->getName() . '#' . spl_object_hash($country);
+                return ['name' => $country->getName() . '#' . spl_object_hash($country)];
             }
         }
 	);

@@ -10,7 +10,7 @@ namespace Blackprism\Serializer\Configuration\Type;
 interface HandlerDeserializerInterface
 {
     /**
-     * @param Object $object
+     * @param object $object
      * @param mixed $value
      */
     public function deserialize($object, $value);

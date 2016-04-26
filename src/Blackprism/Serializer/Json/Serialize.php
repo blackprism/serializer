@@ -34,7 +34,7 @@ class Serialize implements SerializerInterface
     /**
      * Serialize object
      *
-     * @param Object $object
+     * @param object $object
      *
      * @return string
      * @throws InvalidObject
@@ -47,17 +47,13 @@ class Serialize implements SerializerInterface
 
         $jsonEncoded = json_encode($this->setArray($object));
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidObject(json_last_error_msg());
-        }
-
         return $jsonEncoded;
     }
 
     /**
      * Create array from object
      *
-     * @param Object $object
+     * @param object $object
      *
      * @return mixed[string]
      */
@@ -77,7 +73,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param Configuration\TypeInterface $type
-     * @param Object $object
+     * @param object $object
      * @param mixed[string] $data
      * @param ObjectInterface $attribute
      *
@@ -98,7 +94,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param Type\Method $method
-     * @param Object $object
+     * @param object $object
      * @param mixed[string] $data
      * @param string $attribute
      *
@@ -117,7 +113,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param Type\Object $objectType
-     * @param Object $object
+     * @param object $object
      * @param mixed[string] $data
      * @param string $attribute
      *
@@ -134,7 +130,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param Type\Object $objectType
-     * @param Object $object
+     * @param object $object
      * @param mixed[string] $data
      * @param string $attribute
      *
@@ -155,7 +151,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param mixed[string] $data
-     * @param Object $object
+     * @param object $object
      * @param string $attribute
      *
      * @return mixed[string]
@@ -173,7 +169,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param mixed[string] $data
-     * @param Object $object
+     * @param object $object
      * @param mixed $key
      * @param string $attribute
      *
@@ -192,7 +188,7 @@ class Serialize implements SerializerInterface
 
     /**
      * @param Type\Handler $handler
-     * @param Object $object
+     * @param object $object
      * @param mixed[string] $data
      * @param string $attribute
      *

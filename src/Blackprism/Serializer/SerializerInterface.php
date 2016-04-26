@@ -15,7 +15,7 @@ interface SerializerInterface
     /**
      * Serialize with class name as root
      *
-     * @param Object $object
+     * @param object $object
      *
      * @return string
      * @throws InvalidDeserializedValue

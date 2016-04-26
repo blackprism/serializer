@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
-use Blackprism\Serializer\Configuration\Type\Blackhole;
-use Blackprism\Serializer\Configuration\Type\HandlerDeserializerInterface;
-use Blackprism\Serializer\Configuration\Type\HandlerSerializerInterface;
+use Blackprism\Serializer\Configuration\Type;
 use Blackprism\Serializer\Value\ClassName;
 
 /**
@@ -15,7 +13,7 @@ use Blackprism\Serializer\Value\ClassName;
  *
  * @property ClassName $className
  * @property TypeInterface[string] $attributes
- * @property Blackhole $blackhole
+ * @property Type\Blackhole $blackhole
  */
 final class Object implements ObjectInterface
 {
@@ -31,7 +29,7 @@ final class Object implements ObjectInterface
     private $attributes = [];
 
     /**
-     * @var Blackhole
+     * @var Type\Blackhole
      */
     private $blackhole;
 
@@ -41,7 +39,7 @@ final class Object implements ObjectInterface
     public function __construct(ClassName $className)
     {
         $this->className = $className;
-        $this->blackhole = new Blackhole();
+        $this->blackhole = new Type\Blackhole();
     }
 
     /**
@@ -98,15 +96,15 @@ final class Object implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param HandlerDeserializerInterface $deserialize
-     * @param HandlerSerializerInterface $serialize
+     * @param Type\HandlerDeserializerInterface $deserialize
+     * @param Type\HandlerSerializerInterface $serialize
      *
      * @return ObjectInterface
      */
     public function attributeUseHandler(
         string $attribute,
-        HandlerDeserializerInterface $deserialize,
-        HandlerSerializerInterface $serialize
+        Type\HandlerDeserializerInterface $deserialize,
+        Type\HandlerSerializerInterface $serialize
     ): ObjectInterface {
         $this->attributes[$attribute] = new Configuration\Type\Handler($deserialize, $serialize);
 
@@ -114,13 +112,13 @@ final class Object implements ObjectInterface
     }
 
     /**
-     * @param Configuration $mapperConfiguration
+     * @param Configuration $configuration
      *
      * @return ObjectInterface
      */
-    public function registerToConfiguration(Configuration $mapperConfiguration): ObjectInterface
+    public function registerToConfiguration(Configuration $configuration): ObjectInterface
     {
-        $mapperConfiguration->addConfigurationObject($this->className, $this);
+        $configuration->addConfigurationObject($this->className, $this);
 
         return $this;
     }

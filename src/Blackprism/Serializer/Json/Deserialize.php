@@ -36,7 +36,7 @@ class Deserialize implements DeserializerInterface
      * @param string $serialized
      * @param ClassName $className
      *
-     * @return Object
+     * @return object
      * @throws InvalidJson
      */
     public function deserialize(string $serialized, ClassName $className)
@@ -56,7 +56,7 @@ class Deserialize implements DeserializerInterface
      * @param ClassName $className
      * @param mixed[string] $data
      *
-     * @return Object
+     * @return object
      */
     private function setObject(ClassName $className, array $data)
     {
@@ -79,7 +79,7 @@ class Deserialize implements DeserializerInterface
 
     /**
      * @param Configuration\TypeInterface $type
-     * @param Object $object
+     * @param object $object
      * @param mixed $value
      */
     private function processDeserializeForType(Configuration\TypeInterface $type, $object, $value)
@@ -95,7 +95,7 @@ class Deserialize implements DeserializerInterface
 
     /**
      * @param Type\Method $method
-     * @param Object $object
+     * @param object $object
      * @param mixed $value
      *
      * @return Deserialize
@@ -109,7 +109,7 @@ class Deserialize implements DeserializerInterface
 
     /**
      * @param Type\Object $objectType
-     * @param Object $object
+     * @param object $object
      * @param mixed $value
      *
      * @return Deserialize
@@ -131,7 +131,7 @@ class Deserialize implements DeserializerInterface
      * @param Type\Object $objectType
      * @param array $values
      *
-     * @return Object[]
+     * @return object[]
      */
     private function processDeserializeTypeObjectCollection(Type\Object $objectType, array $values)
     {
@@ -145,7 +145,7 @@ class Deserialize implements DeserializerInterface
 
     /**
      * @param Type\Handler $handler
-     * @param Object $object
+     * @param object $object
      * @param mixed $value
      *
      * @return Deserialize
