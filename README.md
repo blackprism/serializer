@@ -157,6 +157,98 @@ $configurationObject
 	);
 ```
 
+## You can use it to serialize/unserialize for a noSQL
+When using a nosql you often add a property to your document to specify what type of document it is, for example:
+```json
+{
+  "type": "city",
+  "name": "Palaiseau"
+}
+```
+
+#### Configuration for identified document
+```php
+use Blackprism\Serializer\Configuration;
+use Blackprism\Serializer\Value\ClassName;
+
+$configuration = new Configuration();
+$configuration->identifierAttribute('type'); // name the property which contain the type of document
+
+$configurationObject = new Configuration\Object(new ClassName(City::class));
+$configurationObject
+    ->attributeUseMethod('name', 'setName', 'getName')
+    ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry') // You don't need to tell which class of object is
+    ->registerToConfigurationWithIdentifier($configuration, 'city'); // Register the configuration with an identifier
+
+$configurationObject = new Configuration\Object(new ClassName(Country::class));
+$configurationObject
+    ->attributeUseMethod('name', 'setName', 'getName')
+    ->registerToConfigurationWithIdentifier($configuration, 'country'); // Register the configuration with an identifier
+
+```
+
+#### Now, you can serialize to a typed object json
+
+```php
+use Blackprism\Serializer\Json;
+
+$country = new Country();
+$country->setName('France');
+
+$city = new City();
+$city->setName('Palaiseau');
+$city->countryIs($country);
+
+$jsonSerializer = new Json\Serialize($configuration);
+$citySerialized = $jsonSerializer->serialize($city);
+
+echo $citySerialized;
+```
+
+Output is:
+```json
+{
+  "type": "city",
+  "name": "Palaiseau",
+  "country": {
+    "type": "country",
+    "name": "France"
+  }
+}
+```
+
+#### And unserialize a typed object json
+```php
+use Blackprism\Serializer\Json;
+
+$json = '{
+          "type": "city",
+          "name": "Palaiseau",
+          "country": {
+            "type": "country",
+            "name": "France"
+          }
+        }';
+
+$jsonDeserializer = new Json\Deserialize($configuration);
+$city = $jsonDeserializer->deserialize($json);
+
+print_r($city);
+```
+
+Output is:
+```php
+class City {
+  private $name =>
+    string(9) "Palaiseau"
+  private $country =>
+      class Country {
+        private $name =>
+        string(6) "France"
+      }
+}
+```
+
 ## Benchmark
 
 For 100,000 iterations :
