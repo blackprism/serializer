@@ -86,13 +86,6 @@ class Deserialize implements DeserializerInterface
         $fqdnClass = $className->getValue();
         $object = new $fqdnClass();
 
-        // @Todo unset or skip with if in $data
-
-        /**
-         * @var string $attribute
-         * @var mixed $value
-         */
-
         foreach ($data as $attribute => $value) {
             if ($attribute === $identifierAttribute) {
                 continue;
