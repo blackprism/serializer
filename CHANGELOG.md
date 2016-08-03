@@ -1,4 +1,4 @@
-# master
+# 1.1.0 - 2016-08-03
 
 * Add feature for typed json
 
