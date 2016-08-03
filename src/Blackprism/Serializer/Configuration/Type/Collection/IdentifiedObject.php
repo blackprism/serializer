@@ -2,25 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Blackprism\Serializer\Configuration\Type;
+namespace Blackprism\Serializer\Configuration\Type\Collection;
 
 use Blackprism\Serializer\Configuration\TypeInterface;
-use Blackprism\Serializer\Value\ClassName;
 
 /**
  * Object
  *
- * @property ClassName $className
  * @property string $setter
  * @property string $getter
  */
-final class Object implements TypeInterface
+final class IdentifiedObject implements TypeInterface
 {
-    /**
-     * @var ClassName
-     */
-    private $className;
-
     /**
      * @var string
      */
@@ -32,23 +25,13 @@ final class Object implements TypeInterface
     private $getter;
 
     /**
-     * @param ClassName $className
      * @param string $setter
      * @param string $getter
      */
-    public function __construct(ClassName $className, string $setter, string $getter)
+    public function __construct(string $setter, string $getter)
     {
-        $this->className = $className;
         $this->setter = $setter;
         $this->getter = $getter;
-    }
-
-    /**
-     * @return ClassName
-     */
-    public function className(): ClassName
-    {
-        return $this->className;
     }
 
     /**

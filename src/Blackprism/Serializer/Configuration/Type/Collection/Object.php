@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blackprism\Serializer\Configuration\Type;
+namespace Blackprism\Serializer\Configuration\Type\Collection;
 
 use Blackprism\Serializer\Configuration\TypeInterface;
 use Blackprism\Serializer\Value\ClassName;

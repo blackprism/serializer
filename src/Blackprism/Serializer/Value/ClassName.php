@@ -19,6 +19,8 @@ final class ClassName
 
     /**
      * @param string $className
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(string $className)
     {

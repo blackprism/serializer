@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Blackprism\Serializer\Json;
 
 use Blackprism\Serializer\Configuration;
-use Blackprism\Serializer\Configuration\ObjectInterface;
 use Blackprism\Serializer\Configuration\Type;
 use Blackprism\Serializer\Exception\InvalidObject;
 use Blackprism\Serializer\SerializerInterface;
@@ -60,8 +59,12 @@ class Serialize implements SerializerInterface
     private function setArray($object): array
     {
         $data = [];
-
         $configurationObject = $this->configuration->getConfigurationObjectForClass(new ClassName(get_class($object)));
+
+        $identifier = $configurationObject->getIdentifier();
+        if ($identifier !== '') {
+            $data[$this->configuration->getIdentifierAttribute()] = $identifier;
+        }
 
         foreach ($configurationObject->getAttributes() as $attribute) {
             $type = $configurationObject->getTypeForAttribute($attribute);
@@ -75,7 +78,7 @@ class Serialize implements SerializerInterface
      * @param Configuration\TypeInterface $type
      * @param object $object
      * @param mixed[string] $data
-     * @param ObjectInterface $attribute
+     * @param string $attribute
      *
      * @return mixed[string]
      */
@@ -85,6 +88,12 @@ class Serialize implements SerializerInterface
             $data = $this->processSerializeTypeMethod($type, $object, $data, $attribute);
         } elseif ($type instanceof Type\Object) {
             $data = $this->processSerializeTypeObject($type, $object, $data, $attribute);
+        } elseif ($type instanceof Type\Collection\Object) {
+            $data = $this->processSerializeTypeCollectionObject($type, $object, $data, $attribute);
+        } elseif ($type instanceof Type\IdentifiedObject) {
+            $data = $this->processSerializeTypeIdentifiedObject($type, $object, $data, $attribute);
+        } elseif ($type instanceof Type\Collection\IdentifiedObject) {
+            $data = $this->processSerializeTypeCollectionIdentifiedObject($type, $object, $data, $attribute);
         } elseif ($type instanceof Type\Handler) {
             $data = $this->processSerializeTypeHandler($type, $object, $data, $attribute);
         }
@@ -121,23 +130,57 @@ class Serialize implements SerializerInterface
      */
     private function processSerializeTypeObject(Type\Object $objectType, $object, array $data, string $attribute): array
     {
-        if ($objectType->isCollection() === true) {
-            return $this->processSerializeTypeObjectCollection($objectType, $object, $data, $attribute);
-        }
-
         return $this->setArrayAndCheckNull($data, $object->{$objectType->getter()}(), $attribute);
     }
 
     /**
-     * @param Type\Object $objectType
+     * @param Type\Collection\Object $objectType
      * @param object $object
      * @param mixed[string] $data
      * @param string $attribute
      *
      * @return mixed[string]
      */
-    private function processSerializeTypeObjectCollection(
-        Type\Object $objectType,
+    private function processSerializeTypeCollectionObject(
+        Type\Collection\Object $objectType,
+        $object,
+        array $data,
+        string $attribute
+    ): array {
+        foreach ($object->{$objectType->getter()}() as $key => $subObject) {
+            $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Type\IdentifiedObject $objectType
+     * @param object $object
+     * @param mixed[string] $data
+     * @param string $attribute
+     *
+     * @return mixed[string]
+     */
+    private function processSerializeTypeIdentifiedObject(
+        Type\IdentifiedObject $objectType,
+        $object,
+        array $data,
+        string $attribute
+    ): array {
+        return $this->setArrayAndCheckNull($data, $object->{$objectType->getter()}(), $attribute);
+    }
+
+    /**
+     * @param Type\Collection\IdentifiedObject $objectType
+     * @param object $object
+     * @param mixed[string] $data
+     * @param string $attribute
+     *
+     * @return mixed[string]
+     */
+    private function processSerializeTypeCollectionIdentifiedObject(
+        Type\Collection\IdentifiedObject $objectType,
         $object,
         array $data,
         string $attribute

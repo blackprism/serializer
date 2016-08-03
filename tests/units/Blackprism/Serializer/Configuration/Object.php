@@ -12,6 +12,25 @@ use tests\fixtures\Country;
 
 class Object extends \atoum
 {
+    public function testGetClassName()
+    {
+        $this
+            ->given($className = new ClassName(City::class))
+            ->and($this->newTestedInstance($className))
+            ->object($this->testedInstance->getClassName())
+                ->isIdenticalTo($className);
+    }
+
+    public function testGetIdentifier()
+    {
+        $this
+            ->given($this->newTestedInstance(new ClassName(City::class)))
+            ->and($identifier = uniqid())
+            ->and($this->testedInstance->registerToConfigurationWithIdentifier(new Configuration(), $identifier))
+            ->string($this->testedInstance->getIdentifier())
+                ->isIdenticalTo($identifier);
+    }
+
     public function testAttributeUseMethod()
     {
         $this
@@ -28,9 +47,9 @@ class Object extends \atoum
                 'country',
                 new ClassName(Country::class),
                 'countryIs',
-                'getCountry')
-            )
-                ->isIdenticalTo($this->testedInstance);
+                'getCountry'
+            ))
+            ->isIdenticalTo($this->testedInstance);
     }
 
     public function testAttributeUseCollectionObject()
@@ -41,9 +60,33 @@ class Object extends \atoum
                 'country',
                 new ClassName(Country::class),
                 'countryIs',
-                'getCountry')
-            )
-                ->isIdenticalTo($this->testedInstance);
+                'getCountry'
+            ))
+            ->isIdenticalTo($this->testedInstance);
+    }
+
+    public function testAttributeUseIdentifiedObject()
+    {
+        $this
+            ->given($this->newTestedInstance(new ClassName(City::class)))
+            ->object($this->testedInstance->attributeUseIdentifiedObject(
+                'country',
+                'countryIs',
+                'getCountry'
+            ))
+            ->isIdenticalTo($this->testedInstance);
+    }
+
+    public function testAttributeUseCollectionIdentifiedObject()
+    {
+        $this
+            ->given($this->newTestedInstance(new ClassName(City::class)))
+            ->object($this->testedInstance->attributeUseCollectionIdentifiedObject(
+                'country',
+                'countryIs',
+                'getCountry'
+            ))
+            ->isIdenticalTo($this->testedInstance);
     }
 
     public function testAttributeUseHandler()
@@ -80,6 +123,16 @@ class Object extends \atoum
             ->given($this->newTestedInstance(new ClassName(City::class)))
             ->and($configuration = new Configuration())
             ->and($this->testedInstance->registerToConfiguration($configuration))
+            ->object($configuration->getConfigurationObjectForClass(new ClassName(City::class)))
+                ->isIdenticalTo($this->testedInstance);
+    }
+
+    public function testRegisterToConfigurationWithIdentifier()
+    {
+        $this
+            ->given($this->newTestedInstance(new ClassName(City::class)))
+            ->and($configuration = new Configuration())
+            ->and($this->testedInstance->registerToConfigurationWithIdentifier($configuration, uniqid()))
             ->object($configuration->getConfigurationObjectForClass(new ClassName(City::class)))
                 ->isIdenticalTo($this->testedInstance);
     }

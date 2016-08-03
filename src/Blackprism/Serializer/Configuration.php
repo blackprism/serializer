@@ -12,6 +12,8 @@ use Blackprism\Serializer\Value\ClassName;
  * Configuration
  *
  * @property ObjectInterface[string] $objects
+ * @property string $identifierAttribute
+ * @property mixed[int] $identifiers
  */
 final class Configuration
 {
@@ -19,6 +21,36 @@ final class Configuration
      * @var ObjectInterface[string]
      */
     private $objects;
+
+    /**
+     * @var string|null
+     */
+    private $identifierAttribute;
+
+    /**
+     * @var mixed[int]
+     */
+    private $identifiers = [];
+
+    /**
+     * @param string $attribute
+     *
+     * @return Configuration
+     */
+    public function identifierAttribute(string $attribute): self
+    {
+        $this->identifierAttribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIdentifierAttribute()
+    {
+        return $this->identifierAttribute;
+    }
 
     /**
      * @param ClassName $className
@@ -35,6 +67,24 @@ final class Configuration
 
     /**
      * @param ClassName $className
+     * @param ObjectInterface $configurationObject
+     * @param string $identifier
+     *
+     * @return Configuration
+     */
+    public function addConfigurationObjectWithIdentifier(
+        ClassName $className,
+        ObjectInterface $configurationObject,
+        $identifier
+    ): self {
+        $this->identifiers[$identifier] = $configurationObject;
+        $this->objects[$className->getIdentifier()] = $configurationObject;
+
+        return $this;
+    }
+
+    /**
+     * @param ClassName $className
      *
      * @return ObjectInterface
      */
@@ -42,6 +92,20 @@ final class Configuration
     {
         if (isset($this->objects[$className->getIdentifier()]) === true) {
             return $this->objects[$className->getIdentifier()];
+        }
+
+        return new Blackhole();
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return ObjectInterface
+     */
+    public function getConfigurationObjectForIdentifier(string $identifier): ObjectInterface
+    {
+        if (isset($this->identifiers[$identifier]) === true) {
+            return $this->identifiers[$identifier];
         }
 
         return new Blackhole();

@@ -6,12 +6,31 @@ namespace tests\units\Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type;
+use Blackprism\Serializer\Value;
 use Blackprism\Serializer\Value\ClassName;
 use tests\fixtures\City;
 use tests\fixtures\Country;
 
 class Blackhole extends \atoum
 {
+    public function testGetClassName()
+    {
+        $this
+            ->given($this->newTestedInstance())
+            ->object($this->testedInstance->getClassName())
+                ->isCloneOf(new Value\ClassName(Value\Blackhole::class));
+    }
+
+    public function testGetIdentifier()
+    {
+        $this
+            ->given($this->newTestedInstance())
+            ->and($identifier = uniqid())
+            ->and($this->testedInstance->registerToConfigurationWithIdentifier(new Configuration(), $identifier))
+            ->string($this->testedInstance->getIdentifier())
+                ->isIdenticalTo('');
+    }
+
     public function testAttributeUseMethod()
     {
         $this
@@ -33,6 +52,22 @@ class Blackhole extends \atoum
         $this
             ->given($this->newTestedInstance)
             ->object($this->testedInstance->attributeUseCollectionObject('country', new ClassName(Country::class), 'countryIs', 'getCountry'))
+                ->isIdenticalTo($this->testedInstance);
+    }
+
+    public function testAttributeUseIdentifiedObject()
+    {
+        $this
+            ->given($this->newTestedInstance)
+            ->object($this->testedInstance->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry'))
+                ->isIdenticalTo($this->testedInstance);
+    }
+
+    public function testAttributeUseCollectionIdentifiedObject()
+    {
+        $this
+            ->given($this->newTestedInstance)
+            ->object($this->testedInstance->attributeUseCollectionIdentifiedObject('country', 'countryIs', 'getCountry'))
                 ->isIdenticalTo($this->testedInstance);
     }
 

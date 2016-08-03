@@ -6,13 +6,29 @@ namespace Blackprism\Serializer\Configuration;
 
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Configuration\Type;
-use Blackprism\Serializer\Value\ClassName;
+use Blackprism\Serializer\Value;
 
 /**
  * Blackhole
  */
 final class Blackhole implements ObjectInterface
 {
+    /**
+     * @return Value\ClassName
+     */
+    public function getClassName(): Value\ClassName
+    {
+        return new Value\ClassName(Value\Blackhole::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return '';
+    }
+
     /**
      * @param string $attribute
      * @param string $setter
@@ -27,7 +43,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param ClassName $className
+     * @param Value\ClassName $className
      * @param string $setter
      * @param string $getter
      *
@@ -35,7 +51,7 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseObject(
         string $attribute,
-        ClassName $className,
+        Value\ClassName $className,
         string $setter,
         string $getter
     ): ObjectInterface {
@@ -44,7 +60,7 @@ final class Blackhole implements ObjectInterface
 
     /**
      * @param string $attribute
-     * @param ClassName $className
+     * @param Value\ClassName $className
      * @param string $setter
      * @param string $getter
      *
@@ -52,7 +68,34 @@ final class Blackhole implements ObjectInterface
      */
     public function attributeUseCollectionObject(
         string $attribute,
-        ClassName $className,
+        Value\ClassName $className,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseIdentifiedObject(string $attribute, string $setter, string $getter): ObjectInterface
+    {
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseCollectionIdentifiedObject(
+        string $attribute,
         string $setter,
         string $getter
     ): ObjectInterface {
@@ -81,6 +124,19 @@ final class Blackhole implements ObjectInterface
      */
     public function registerToConfiguration(Configuration $configuration): ObjectInterface
     {
+        return $this;
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @param string $identifier
+     *
+     * @return ObjectInterface
+     */
+    public function registerToConfigurationWithIdentifier(
+        Configuration $configuration,
+        string $identifier
+    ): ObjectInterface {
         return $this;
     }
 

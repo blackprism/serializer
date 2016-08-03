@@ -36,11 +36,19 @@
     </target>
 
     <target name="phpmd">
-        <phpmd rulesets="codesize,unusedcode,naming">
+        <phpmd rulesets="codesize,unusedcode,naming,cleancode,controversial">
             <fileset dir="src/Blackprism/Serializer">
                 <include name="**/*.php" />
             </fileset>
         </phpmd>
+    </target>
+
+    <target name="phpcpd">
+        <phpcpd>
+            <fileset dir="src/Blackprism/Serializer">
+                <include name="**/*.php" />
+            </fileset>
+        </phpcpd>
     </target>
 
     <target name="test">
@@ -48,8 +56,8 @@
                 atoumpharpath="./vendor/bin/atoum"
                 bootstrap="./vendor/autoload.php"
                 codecoverage="true"
-                codecoveragereportpath="./tests/coverage/"
-                codecoveragereporturl="file://${fullpath}/tests/coverage/index.html"
+                codecoveragereportextensionpath="./tests/coverage/"
+                codecoveragereportextensionurl="file://${fullpath}/tests/coverage/index.html"
                 showcodecoverage="true"
                 showmissingcodecoverage="true"
                 showprogress="true"

@@ -18,6 +18,11 @@ class City
     private $name = '';
 
     /**
+     * @var string|null
+     */
+    private $zipCode = null;
+
+    /**
      * @var Country|null
      */
     private $country = null;
@@ -36,6 +41,22 @@ class City
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string|null $zipCode
+     */
+    public function setZipCode($zipCode)
+    {
+        $this->zipCode = $zipCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZipCode()
+    {
+        return $this->zipCode;
     }
 
     /**
