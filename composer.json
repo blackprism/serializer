@@ -16,9 +16,12 @@
         "phpmd/phpmd": "^2.0",
         "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^2.0",
-        "atoum/atoum": "^2.6",
-        "atoum/stubs": "^2.5"
+        "atoum/atoum": "dev-master",
+        "atoum/stubs": "dev-master",
+        "atoum/reports-extension": "dev-master"
     },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Blackprism\\Serializer\\": "src/Blackprism/Serializer/"

@@ -56,6 +56,86 @@ class Serialize extends \atoum
                 ->isIdenticalTo('{"name":"Palaiseau","country":{"name":"France"}}');
     }
 
+    public function testSerializeWithTypeObjectAndNullValue()
+    {
+        $city = new City();
+        $city->setName('Palaiseau');
+        $city->setZipCode(null);
+
+        $configuration = new Configuration();
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseMethod('zipCode', 'setZipCode', 'getZipCode')
+            ->registerToConfiguration($configuration);
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($city))
+                ->isIdenticalTo('{"name":"Palaiseau"}');
+    }
+
+    public function testSerializeWithTypeObjectAndEmptyArray()
+    {
+        $city = new Country();
+        $city->setName('France');
+        $city->citiesAre([]);
+
+        $configuration = new Configuration();
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionObject('cities', new ClassName(City::class), 'citiesAre', 'getCities')
+            ->registerToConfiguration($configuration);
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfiguration($configuration);
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($city))
+                ->isIdenticalTo('{"name":"France"}');
+    }
+
+    public function testSerializeWithTypeObjectAndEmptyCountable()
+    {
+        $city = new Country();
+        $city->setName('France');
+        $city->citiesInTraversable(new class implements \IteratorAggregate, \Countable {
+            public function count()
+            {
+                return 0;
+            }
+
+            public function getIterator()
+            {
+                return new \ArrayIterator();
+            }
+        });
+
+        $configuration = new Configuration();
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionObject('cities', new ClassName(City::class), 'citiesAre', 'getCities')
+            ->registerToConfiguration($configuration);
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfiguration($configuration);
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($city))
+                ->isIdenticalTo('{"name":"France"}');
+    }
+
     public function testSerializeWithTypeCollectionObject()
     {
         $cityPalaiseau = new City();
@@ -85,6 +165,66 @@ class Serialize extends \atoum
             ->given($this->newTestedInstance($configuration))
             ->string($this->testedInstance->serialize($country))
                 ->isIdenticalTo('{"name":"France","cities":[{"name":"Palaiseau"},{"name":"Paris"}]}');
+    }
+
+    public function testSerializeWithTypeIdentifiedObject()
+    {
+        $city = new City();
+        $city->setName('Palaiseau');
+        $country = new Country();
+        $country->setName('France');
+        $city->countryIs($country);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($city))
+                ->isIdenticalTo('{"type":"city","name":"Palaiseau","country":{"type":"country","name":"France"}}');
+    }
+
+    public function testSerializeWithTypeCollectionIdentifiedObject()
+    {
+        $cityPalaiseau = new City();
+        $cityPalaiseau->setName('Palaiseau');
+
+        $cityParis = new City();
+        $cityParis->setName('Paris');
+
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesAre([$cityPalaiseau, $cityParis]);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionIdentifiedObject('cities', 'citiesAre', 'getCities')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($country))
+            ->isIdenticalTo('{"type":"country","name":"France","cities":[{"type":"city","name":"Palaiseau"},{"type":"city","name":"Paris"}]}');
     }
 
     public function testSerializeWithTypeHandler()

@@ -54,9 +54,9 @@ class Country
     }
 
     /**
-     * @return array
+     * @return array|\Traversable
      */
-    public function getCities(): array
+    public function getCities()
     {
         return $this->cities;
     }

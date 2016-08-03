@@ -13,7 +13,6 @@ use Blackprism\Serializer\Value\ClassName;
  * @property ClassName $className
  * @property string $setter
  * @property string $getter
- * @property bool $collection
  */
 final class Object implements TypeInterface
 {
@@ -33,22 +32,15 @@ final class Object implements TypeInterface
     private $getter;
 
     /**
-     * @var bool
-     */
-    private $collection;
-
-    /**
      * @param ClassName $className
      * @param string $setter
      * @param string $getter
-     * @param bool $collection
      */
-    public function __construct(ClassName $className, string $setter, string $getter, bool $collection = false)
+    public function __construct(ClassName $className, string $setter, string $getter)
     {
         $this->className = $className;
         $this->setter = $setter;
         $this->getter = $getter;
-        $this->collection = $collection;
     }
 
     /**
@@ -73,13 +65,5 @@ final class Object implements TypeInterface
     public function getter(): string
     {
         return $this->getter;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCollection(): bool
-    {
-        return $this->collection;
     }
 }

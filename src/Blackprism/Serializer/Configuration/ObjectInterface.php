@@ -16,6 +16,16 @@ interface ObjectInterface
 {
 
     /**
+     * @return ClassName
+     */
+    public function getClassName(): ClassName;
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string;
+
+    /**
      * Serialize/Deserialize attribute via method
      *
      * @param string $attribute
@@ -56,6 +66,26 @@ interface ObjectInterface
     ): self;
 
     /**
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseIdentifiedObject(string $attribute, string $setter, string $getter): self;
+
+    /**
+     * Serialize/Deserialize attribute as an collection of identified objects
+     *
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseCollectionIdentifiedObject(string $attribute, string $setter, string $getter): self;
+
+    /**
      * Serialize/Deserialize attribute via callable
      *
      * @param string $attribute
@@ -78,6 +108,17 @@ interface ObjectInterface
      * @return ObjectInterface
      */
     public function registerToConfiguration(Configuration $configuration): self;
+
+    /**
+     * Tell Object to register to Configuration with an identifier
+     *
+     * @param Configuration $configuration
+     * @param string $identifier
+     *
+     * @return ObjectInterface
+     */
+    public function registerToConfigurationWithIdentifier(Configuration $configuration, string $identifier): self;
+
 
     /**
      * Retrieve type for attribute

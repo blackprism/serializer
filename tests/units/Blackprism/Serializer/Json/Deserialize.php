@@ -5,6 +5,8 @@ namespace tests\units\Blackprism\Serializer\Json;
 
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Exception\InvalidJson;
+use Blackprism\Serializer\Exception\MissingIdentifierAttribute;
+use Blackprism\Serializer\Exception\UndefinedIdentifierAttribute;
 use Blackprism\Serializer\Value\ClassName;
 use tests\fixtures\City;
 use tests\fixtures\Country;
@@ -33,6 +35,7 @@ class Deserialize extends \atoum
     {
         $city = new City();
         $city->setName('Palaiseau');
+
         $country = new Country();
         $country->setName('France');
         $city->countryIs($country);
@@ -93,6 +96,195 @@ class Deserialize extends \atoum
             ->isCloneOf($country);
     }
 
+    public function testDeserializeWithTypeIdentifiedObject()
+    {
+        $city = new City();
+        $city->setName('Palaiseau');
+
+        $country = new Country();
+        $country->setName('France');
+        $city->countryIs($country);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "city", "name": "Palaiseau", "country": {"type": "country", "name": "France"}}'
+            ))
+            ->isCloneOf($city);
+    }
+
+    public function testDeserializeWithTypeIdentifiedObjectShouldNotObjectWithoutIdentifierAttribute()
+    {
+        $city = new City();
+        $city->setName('Palaiseau');
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "city", "name": "Palaiseau", "country": {"name": "France"}}'
+            ))
+                ->isCloneOf($city);
+    }
+
+    public function testDeserializeWithTypeIdentifiedObjectShouldNotObjectWithUnknownIdentifierAttribute()
+    {
+        $city = new City();
+        $city->setName('Palaiseau');
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "city", "name": "Palaiseau", "country": {"type": "unknownType", "name": "France"}}'
+            ))
+                ->isCloneOf($city);
+    }
+
+    public function testDeserializeWithTypeCollectionIdentifiedObject()
+    {
+        $cityPalaiseau = new City();
+        $cityPalaiseau->setName('Palaiseau');
+
+        $cityParis = new City();
+        $cityParis->setName('Paris');
+
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesAre([$cityPalaiseau, $cityParis]);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionIdentifiedObject('cities', 'citiesAre', 'getCities')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "country", "name": "France","cities":[ 
+                    {"type": "city", "name":"Palaiseau"}, {"type": "city", "name":"Paris"} 
+                ]}',
+                new ClassName(Country::class)
+            ))
+            ->isCloneOf($country);
+    }
+
+    public function testDeserializeWithTypeCollectionIdentifiedObjectShouldNotObjectWithoutIdentifierAttribute()
+    {
+        $cityPalaiseau = new City();
+        $cityPalaiseau->setName('Palaiseau');
+
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesAre([$cityPalaiseau]);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionIdentifiedObject('cities', 'citiesAre', 'getCities')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "country", "name": "France","cities":[ 
+                    {"type": "city", "name":"Palaiseau"}, {"name":"Paris"} 
+                ]}',
+                new ClassName(Country::class)
+            ))
+                ->isCloneOf($country);
+    }
+
+    public function testDeserializeWithTypeCollectionIdentifiedObjectShouldNotProcessSubObjectWithUnknownIdentifierAttribute()
+    {
+        $cityPalaiseau = new City();
+        $cityPalaiseau->setName('Palaiseau');
+
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesAre([$cityPalaiseau]);
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionIdentifiedObject('cities', 'citiesAre', 'getCities')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->object($this->testedInstance->deserialize(
+                '{"type": "country", "name": "France","cities":[ 
+                    {"type": "city", "name":"Palaiseau"}, {"type": "unknownType", "name":"Paris"} 
+                ]}',
+                new ClassName(Country::class)
+            ))
+            ->isCloneOf($country);
+    }
 
     public function testDeserializeWithTypeHandler()
     {
@@ -159,5 +351,35 @@ class Deserialize extends \atoum
                 $this->testedInstance->deserialize('"name": "Palaiseau"', new ClassName(City::class));
             })
                ->isInstanceOf(InvalidJson::class);
+    }
+
+    public function testDeserializeForIdentifiedObjectShouldThrowExceptionWhenIdentifierAttributeNotSetOnMainObject()
+    {
+        $configuration = new Configuration();
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->exception(function () {
+                $this->testedInstance->deserialize('{"name": "Palaiseau"}');
+            })
+                ->isInstanceOf(UndefinedIdentifierAttribute::class);
+    }
+
+    public function testDeserializeForIdentifiedObjectShouldThrowExceptionWhenJsonDontHaveIdentifier()
+    {
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->exception(function () {
+                $this->testedInstance->deserialize('{"name": "Palaiseau"}');
+            })
+                ->isInstanceOf(MissingIdentifierAttribute::class);
     }
 }

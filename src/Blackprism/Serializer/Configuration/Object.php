@@ -12,16 +12,21 @@ use Blackprism\Serializer\Value\ClassName;
  * Object
  *
  * @property ClassName $className
+ * @property string $identifier
  * @property TypeInterface[string] $attributes
  * @property Type\Blackhole $blackhole
  */
 final class Object implements ObjectInterface
 {
-
     /**
      * @var ClassName
      */
     private $className;
+
+    /**
+     * @var string
+     */
+    private $identifier = '';
 
     /**
      * @var TypeInterface[string]
@@ -43,6 +48,34 @@ final class Object implements ObjectInterface
     }
 
     /**
+     * @return ClassName
+     */
+    public function getClassName(): ClassName
+    {
+        return $this->className;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return ObjectInterface
+     */
+    private function identifier(string $identifier): ObjectInterface
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    /**
      * @param string $attribute
      * @param string $setter
      * @param string $getter
@@ -51,7 +84,7 @@ final class Object implements ObjectInterface
      */
     public function attributeUseMethod(string $attribute, string $setter, string $getter): ObjectInterface
     {
-        $this->attributes[$attribute] = new Configuration\Type\Method($setter, $getter);
+        $this->attributes[$attribute] = new Type\Method($setter, $getter);
 
         return $this;
     }
@@ -70,7 +103,7 @@ final class Object implements ObjectInterface
         string $setter,
         string $getter
     ): ObjectInterface {
-        $this->attributes[$attribute] = new Configuration\Type\Object($className, $setter, $getter);
+        $this->attributes[$attribute] = new Type\Object($className, $setter, $getter);
 
         return $this;
     }
@@ -89,7 +122,38 @@ final class Object implements ObjectInterface
         string $setter,
         string $getter
     ): ObjectInterface {
-        $this->attributes[$attribute] = new Configuration\Type\Object($className, $setter, $getter, true);
+        $this->attributes[$attribute] = new Type\Collection\Object($className, $setter, $getter);
+
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseIdentifiedObject(string $attribute, string $setter, string $getter): ObjectInterface
+    {
+        $this->attributes[$attribute] = new Type\IdentifiedObject($setter, $getter);
+
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $setter
+     * @param string $getter
+     *
+     * @return ObjectInterface
+     */
+    public function attributeUseCollectionIdentifiedObject(
+        string $attribute,
+        string $setter,
+        string $getter
+    ): ObjectInterface {
+        $this->attributes[$attribute] = new Type\Collection\IdentifiedObject($setter, $getter);
 
         return $this;
     }
@@ -106,7 +170,7 @@ final class Object implements ObjectInterface
         Type\HandlerDeserializerInterface $deserialize,
         Type\HandlerSerializerInterface $serialize
     ): ObjectInterface {
-        $this->attributes[$attribute] = new Configuration\Type\Handler($deserialize, $serialize);
+        $this->attributes[$attribute] = new Type\Handler($deserialize, $serialize);
 
         return $this;
     }
@@ -119,6 +183,22 @@ final class Object implements ObjectInterface
     public function registerToConfiguration(Configuration $configuration): ObjectInterface
     {
         $configuration->addConfigurationObject($this->className, $this);
+
+        return $this;
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @param string $identifier
+     *
+     * @return ObjectInterface
+     */
+    public function registerToConfigurationWithIdentifier(
+        Configuration $configuration,
+        string $identifier
+    ): ObjectInterface {
+        $this->identifier($identifier);
+        $configuration->addConfigurationObjectWithIdentifier($this->className, $this, $identifier);
 
         return $this;
     }
