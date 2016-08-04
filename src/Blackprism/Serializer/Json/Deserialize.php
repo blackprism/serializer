@@ -34,23 +34,36 @@ class Deserialize implements DeserializerInterface
     }
 
     /**
-     * Deserialize string with class as the root object
-     *
      * @param string $serialized
-     * @param ClassName $className
      *
-     * @return object
+     * @return mixed
      * @throws InvalidJson
-     * @throws UndefinedIdentifierAttribute
-     * @throws MissingIdentifierAttribute
      */
-    public function deserialize(string $serialized, ClassName $className = null)
+    private function decodeJson(string $serialized)
     {
         $objectsAsArray = json_decode($serialized, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidJson(json_last_error_msg());
         }
+
+        return $objectsAsArray;
+    }
+
+    /**
+     * Deserialize string with class as the root object
+     *
+     * @param string $serialized
+     * @param ClassName $className
+     *
+     * @return object|object[mixed]
+     * @throws InvalidJson
+     * @throws UndefinedIdentifierAttribute
+     * @throws MissingIdentifierAttribute
+     */
+    public function deserialize(string $serialized, ClassName $className = null)
+    {
+        $objectsAsArray = $this->decodeJson($serialized);
 
         if ($className !== null) {
             return $this->setObjectForClass($className, $objectsAsArray);
@@ -60,11 +73,34 @@ class Deserialize implements DeserializerInterface
     }
 
     /**
+     * Deserialize string with class as the root object
+     *
+     * @param string $serialized
+     * @param ClassName $className
+     *
+     * @return object[mixed]
+     * @throws InvalidJson
+     * @throws UndefinedIdentifierAttribute
+     * @throws MissingIdentifierAttribute
+     */
+    public function deserializeCollection(string $serialized, ClassName $className)
+    {
+        $objectsAsArray = $this->decodeJson($serialized);
+
+        $objects = [];
+        foreach ($objectsAsArray as $attribute => $object) {
+            $objects[$attribute] = $this->setObjectForClass($className, $object);
+        }
+
+        return $objects;
+    }
+
+    /**
      * Create class object with data
      *
      * @param mixed[string] $data
      *
-     * @return object
+     * @return object|object[mixed]
      * @throws UndefinedIdentifierAttribute
      * @throws MissingIdentifierAttribute
      */
@@ -76,26 +112,37 @@ class Deserialize implements DeserializerInterface
             throw new UndefinedIdentifierAttribute();
         }
 
-        if (isset($data[$identifierAttribute]) === false) {
-            throw new MissingIdentifierAttribute();
-        }
+        // We found an identifier attribute, $data is a json object
+        if (isset($data[$identifierAttribute]) === true) {
+            $configurationObject = $this->configuration
+                ->getConfigurationObjectForIdentifier($data[$identifierAttribute]);
+            $className = $configurationObject->getClassName();
+            $fqdnClass = $className->getValue();
+            $object = new $fqdnClass();
 
-        $configurationObject = $this->configuration->getConfigurationObjectForIdentifier($data[$identifierAttribute]);
+            foreach ($data as $attribute => $value) {
+                if ($attribute === $identifierAttribute) {
+                    continue;
+                }
 
-        $className = $configurationObject->getClassName();
-        $fqdnClass = $className->getValue();
-        $object = new $fqdnClass();
-
-        foreach ($data as $attribute => $value) {
-            if ($attribute === $identifierAttribute) {
-                continue;
+                $type = $configurationObject->getTypeForAttribute($attribute);
+                $this->processDeserializeForType($type, $object, $value);
             }
 
-            $type = $configurationObject->getTypeForAttribute($attribute);
-            $this->processDeserializeForType($type, $object, $value);
+            return $object;
         }
 
-        return $object;
+        // We don't found an identifier attribute, $data is a collection
+        $objects = [];
+        foreach ($data as $attribute => $object) {
+            if (is_array($object) === false) {
+                throw new MissingIdentifierAttribute();
+            }
+
+            $objects[$attribute] = $this->setObject($object);
+        }
+
+        return $objects;
     }
 
     /**
@@ -104,17 +151,13 @@ class Deserialize implements DeserializerInterface
      * @param ClassName $className
      * @param mixed[string] $data
      *
-     * @return object
+     * @return object|object[mixed]
      */
     private function setObjectForClass(ClassName $className, array $data)
     {
         $fqdnClass = $className->getValue();
         $object = new $fqdnClass();
 
-        /**
-         * @var string $attribute
-         * @var mixed $value
-         */
         foreach ($data as $attribute => $value) {
             $configurationObject = $this->configuration->getConfigurationObjectForClass($className);
             $type = $configurationObject->getTypeForAttribute($attribute);

@@ -157,7 +157,32 @@ $configurationObject
 	);
 ```
 
+## You have a collection of object at root node?
+
+Assuming you have this json:
+```json
+[
+    {
+      "name": "Palaiseau",
+      "country": {
+        "name": "France"
+      }
+    },
+    {
+      "name": "Paris",
+      "country": {
+        "name": "France"
+      }
+    }
+]
+```
+You need to use deserializeCollection:
+```
+$cities = $jsonDeserializer->deserializeCollection($json, new ClassName(City::class));
+```
+
 ## You can use it to serialize/unserialize for a noSQL
+
 When using a nosql you often add a property to your document to specify what type of document it is, for example:
 ```json
 {
@@ -167,6 +192,7 @@ When using a nosql you often add a property to your document to specify what typ
 ```
 
 #### Configuration for identified document
+
 ```php
 use Blackprism\Serializer\Configuration;
 use Blackprism\Serializer\Value\ClassName;
@@ -218,6 +244,7 @@ Output is:
 ```
 
 #### And unserialize a typed object json
+
 ```php
 use Blackprism\Serializer\Json;
 
@@ -248,6 +275,8 @@ class City {
       }
 }
 ```
+
+Note: You have identified document, so you don't need to use deserializeCollection even if the root node is a collection.
 
 ## Benchmark
 
