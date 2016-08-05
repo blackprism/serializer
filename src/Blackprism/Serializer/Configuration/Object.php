@@ -13,7 +13,7 @@ use Blackprism\Serializer\Value\ClassName;
  *
  * @property ClassName $className
  * @property string $identifier
- * @property TypeInterface[string] $attributes
+ * @property TypeInterface[] $attributes
  * @property Type\Blackhole $blackhole
  */
 final class Object implements ObjectInterface
@@ -29,7 +29,7 @@ final class Object implements ObjectInterface
     private $identifier = '';
 
     /**
-     * @var TypeInterface[string]
+     * @var TypeInterface[]
      */
     private $attributes = [];
 
