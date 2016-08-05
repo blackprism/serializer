@@ -114,25 +114,49 @@ class Deserialize implements DeserializerInterface
 
         // We found an identifier attribute, $data is a json object
         if (isset($data[$identifierAttribute]) === true) {
-            $configurationObject = $this->configuration
-                ->getConfigurationObjectForIdentifier($data[$identifierAttribute]);
-            $className = $configurationObject->getClassName();
-            $fqdnClass = $className->getValue();
-            $object = new $fqdnClass();
-
-            foreach ($data as $attribute => $value) {
-                if ($attribute === $identifierAttribute) {
-                    continue;
-                }
-
-                $type = $configurationObject->getTypeForAttribute($attribute);
-                $this->processDeserializeForType($type, $object, $value);
-            }
-
-            return $object;
+            return $this->setObjectForObjectData($identifierAttribute, $data);
         }
 
         // We don't found an identifier attribute, $data is a collection
+        return $this->setObjectForCollectionData($data);
+    }
+
+    /**
+     * @param string $identifierAttribute
+     * @param array $data
+     *
+     * @return mixed
+     */
+    private function setObjectForObjectData(string $identifierAttribute, array $data)
+    {
+        $configurationObject = $this->configuration
+            ->getConfigurationObjectForIdentifier($data[$identifierAttribute]);
+        $className = $configurationObject->getClassName();
+        $fqdnClass = $className->getValue();
+        $object = new $fqdnClass();
+
+        foreach ($data as $attribute => $value) {
+            if ($attribute === $identifierAttribute) {
+                continue;
+            }
+
+            $type = $configurationObject->getTypeForAttribute($attribute);
+            $this->processDeserializeForType($type, $object, $value);
+        }
+
+        return $object;
+    }
+
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return object[]
+     * @throws MissingIdentifierAttribute
+     * @throws UndefinedIdentifierAttribute
+     */
+    private function setObjectForCollectionData(array $data)
+    {
         $objects = [];
         foreach ($data as $attribute => $object) {
             if (is_array($object) === false) {
