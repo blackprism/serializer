@@ -56,7 +56,7 @@ class Deserialize implements DeserializerInterface
      * @param string $serialized
      * @param ClassName $className
      *
-     * @return object|object[mixed]
+     * @return object|object[]
      * @throws InvalidJson
      * @throws UndefinedIdentifierAttribute
      * @throws MissingIdentifierAttribute
@@ -78,7 +78,7 @@ class Deserialize implements DeserializerInterface
      * @param string $serialized
      * @param ClassName $className
      *
-     * @return object[mixed]
+     * @return object[]
      * @throws InvalidJson
      * @throws UndefinedIdentifierAttribute
      * @throws MissingIdentifierAttribute
@@ -98,9 +98,9 @@ class Deserialize implements DeserializerInterface
     /**
      * Create class object with data
      *
-     * @param mixed[string] $data
+     * @param mixed[] $data
      *
-     * @return object|object[mixed]
+     * @return object|object[]
      * @throws UndefinedIdentifierAttribute
      * @throws MissingIdentifierAttribute
      */
@@ -173,9 +173,9 @@ class Deserialize implements DeserializerInterface
      * Create $className object with data
      *
      * @param ClassName $className
-     * @param mixed[string] $data
+     * @param mixed[] $data
      *
-     * @return object|object[mixed]
+     * @return object|object[]
      */
     private function setObjectForClass(ClassName $className, array $data)
     {

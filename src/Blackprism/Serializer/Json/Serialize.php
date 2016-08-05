@@ -54,7 +54,7 @@ class Serialize implements SerializerInterface
      *
      * @param object $object
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArray($object): array
     {
@@ -77,10 +77,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Configuration\TypeInterface $type
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeForType(Configuration\TypeInterface $type, $object, array $data, $attribute): array
     {
@@ -104,10 +104,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Method $method
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeMethod(Type\Method $method, $object, array $data, string $attribute): array
     {
@@ -123,10 +123,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Object $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeObject(Type\Object $objectType, $object, array $data, string $attribute): array
     {
@@ -136,10 +136,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Collection\Object|Type\Collection\IdentifiedObject $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeCollectionObject($objectType, $object, array $data, string $attribute): array
     {
@@ -158,10 +158,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\IdentifiedObject $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeIdentifiedObject(
         Type\IdentifiedObject $objectType,
@@ -173,11 +173,11 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param object $object
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArrayAndCheckNull(array $data, $object, $attribute): array
     {
@@ -191,12 +191,12 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param object $object
      * @param mixed $key
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArrayAndCheckNullWithKey(array $data, $object, $key, $attribute): array
     {
@@ -212,10 +212,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Handler $handler
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeHandler(Type\Handler $handler, $object, array $data, string $attribute): array
     {
