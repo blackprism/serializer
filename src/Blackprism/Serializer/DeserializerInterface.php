@@ -19,7 +19,7 @@ interface DeserializerInterface
      * @param string $serialized
      * @param ClassName $className
      *
-     * @return object
+     * @return object|object[]
      * @throws InvalidSerializedValue
      */
     public function deserialize(string $serialized, ClassName $className);
