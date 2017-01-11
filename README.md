@@ -1,3 +1,5 @@
+# Not maintained anymore, Symfony Serializer is enough.
+
 # Serializer [![Build Status](https://travis-ci.org/blackprism/serializer.svg?branch=master)](https://travis-ci.org/blackprism/serializer)
 
 **A fast and simple json serializer library for PHP 7.0+**
