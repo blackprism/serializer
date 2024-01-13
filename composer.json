@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=7"
+        "php": ">=7.0.7"
     },
     "require-dev": {
         "phing/phing": "^2.0",

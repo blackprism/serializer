@@ -103,9 +103,9 @@ class Serialize extends \atoum
 
     public function testSerializeWithTypeObjectAndEmptyCountable()
     {
-        $city = new Country();
-        $city->setName('France');
-        $city->citiesInTraversable(new class implements \IteratorAggregate, \Countable {
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesInTraversable(new class implements \IteratorAggregate, \Countable {
             public function count()
             {
                 return 0;
@@ -132,7 +132,7 @@ class Serialize extends \atoum
 
         $this
             ->given($this->newTestedInstance($configuration))
-            ->string($this->testedInstance->serialize($city))
+            ->string($this->testedInstance->serialize($country))
                 ->isIdenticalTo('{"name":"France"}');
     }
 
@@ -165,6 +165,37 @@ class Serialize extends \atoum
             ->given($this->newTestedInstance($configuration))
             ->string($this->testedInstance->serialize($country))
                 ->isIdenticalTo('{"name":"France","cities":[{"name":"Palaiseau"},{"name":"Paris"}]}');
+    }
+
+    public function testSerializeWithTypeCollectionObjectEmpty()
+    {
+        $cityPalaiseau = new City();
+        $cityPalaiseau->setName('Palaiseau');
+
+        $cityParis = new City();
+        $cityParis->setName('Paris');
+
+        $country = new Country();
+        $country->setName('France');
+        $country->citiesAre([]);
+
+        $configuration = new Configuration();
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseCollectionObject('cities', new ClassName(City::class), 'citiesAre', 'getCities')
+            ->registerToConfiguration($configuration);
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfiguration($configuration);
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->string($this->testedInstance->serialize($country))
+            ->isIdenticalTo('{"name":"France"}');
     }
 
     public function testSerializeWithTypeIdentifiedObject()

@@ -11,14 +11,14 @@ use Blackprism\Serializer\Value\ClassName;
 /**
  * Configuration
  *
- * @property ObjectInterface[string] $objects
+ * @property ObjectInterface[] $objects
  * @property string $identifierAttribute
- * @property mixed[int] $identifiers
+ * @property mixed[] $identifiers
  */
 final class Configuration
 {
     /**
-     * @var ObjectInterface[string]
+     * @var ObjectInterface[]
      */
     private $objects;
 
@@ -28,7 +28,7 @@ final class Configuration
     private $identifierAttribute;
 
     /**
-     * @var mixed[int]
+     * @var mixed[]
      */
     private $identifiers = [];
 

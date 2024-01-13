@@ -54,7 +54,7 @@ class Serialize implements SerializerInterface
      *
      * @param object $object
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArray($object): array
     {
@@ -77,10 +77,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Configuration\TypeInterface $type
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeForType(Configuration\TypeInterface $type, $object, array $data, $attribute): array
     {
@@ -93,7 +93,7 @@ class Serialize implements SerializerInterface
         } elseif ($type instanceof Type\IdentifiedObject) {
             $data = $this->processSerializeTypeIdentifiedObject($type, $object, $data, $attribute);
         } elseif ($type instanceof Type\Collection\IdentifiedObject) {
-            $data = $this->processSerializeTypeCollectionIdentifiedObject($type, $object, $data, $attribute);
+            $data = $this->processSerializeTypeCollectionObject($type, $object, $data, $attribute);
         } elseif ($type instanceof Type\Handler) {
             $data = $this->processSerializeTypeHandler($type, $object, $data, $attribute);
         }
@@ -104,10 +104,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Method $method
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeMethod(Type\Method $method, $object, array $data, string $attribute): array
     {
@@ -123,10 +123,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Object $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeObject(Type\Object $objectType, $object, array $data, string $attribute): array
     {
@@ -134,20 +134,21 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param Type\Collection\Object $objectType
+     * @param Type\Collection\Object|Type\Collection\IdentifiedObject $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
-    private function processSerializeTypeCollectionObject(
-        Type\Collection\Object $objectType,
-        $object,
-        array $data,
-        string $attribute
-    ): array {
-        foreach ($object->{$objectType->getter()}() as $key => $subObject) {
+    private function processSerializeTypeCollectionObject($objectType, $object, array $data, string $attribute): array
+    {
+        $subData = $object->{$objectType->getter()}();
+        if ($this->checkNullForAttribute($subData, $attribute) === true) {
+            return $data;
+        }
+
+        foreach ($subData as $key => $subObject) {
             $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
         }
 
@@ -157,10 +158,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\IdentifiedObject $objectType
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeIdentifiedObject(
         Type\IdentifiedObject $objectType,
@@ -172,51 +173,30 @@ class Serialize implements SerializerInterface
     }
 
     /**
-     * @param Type\Collection\IdentifiedObject $objectType
-     * @param object $object
-     * @param mixed[string] $data
-     * @param string $attribute
-     *
-     * @return mixed[string]
-     */
-    private function processSerializeTypeCollectionIdentifiedObject(
-        Type\Collection\IdentifiedObject $objectType,
-        $object,
-        array $data,
-        string $attribute
-    ): array {
-        foreach ($object->{$objectType->getter()}() as $key => $subObject) {
-            $data = $this->setArrayAndCheckNullWithKey($data, $subObject, $key, $attribute);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param object $object
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArrayAndCheckNull(array $data, $object, $attribute): array
     {
         $value = $this->setArray($object);
 
         if ($this->checkNullForAttribute($value, $attribute) === false) {
-            $data[$attribute]= $value;
+            $data[$attribute] = $value;
         }
 
         return $data;
     }
 
     /**
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param object $object
      * @param mixed $key
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function setArrayAndCheckNullWithKey(array $data, $object, $key, $attribute): array
     {
@@ -232,10 +212,10 @@ class Serialize implements SerializerInterface
     /**
      * @param Type\Handler $handler
      * @param object $object
-     * @param mixed[string] $data
+     * @param mixed[] $data
      * @param string $attribute
      *
-     * @return mixed[string]
+     * @return mixed[]
      */
     private function processSerializeTypeHandler(Type\Handler $handler, $object, array $data, string $attribute): array
     {
@@ -259,10 +239,15 @@ class Serialize implements SerializerInterface
     protected function checkNullForAttribute($value, $attribute): bool
     {
         // We don't use $attribute here, we want filter all value with the same behavior
+        if ($value === null) {
+            return true;
+        }
 
-        if ($value === null
-            || is_array($value) === true && $value === []
-            || $value instanceof \Countable && count($value) === 0) {
+        if (is_array($value) === true && $value === []) {
+            return true;
+        }
+
+        if ($value instanceof \Countable && count($value) === 0) {
             return true;
         }
 

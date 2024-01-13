@@ -31,7 +31,33 @@ class Deserialize extends \atoum
                 ->isCloneOf($city);
     }
 
-    public function testDeserializeWithTypeObject()
+    public function testDeserializeCollection()
+    {
+        $palaiseau = new City();
+        $palaiseau->setName('Palaiseau');
+        $paris = new City();
+        $paris->setName('Paris');
+
+        $cities = [
+            'city-1' => $palaiseau,
+            'city-2' => $paris
+        ];
+
+        $configuration = new Configuration();
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfiguration($configuration);
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->array($this->testedInstance->deserializeCollection(
+                '{"city-1": {"name": "Palaiseau"}, "city-2": {"name": "Paris"}}', new ClassName(City::class)))
+            ->isEqualTo($cities);
+    }
+
+    public function testDeserializeWithComposedObject()
     {
         $city = new City();
         $city->setName('Palaiseau');
@@ -127,7 +153,47 @@ class Deserialize extends \atoum
             ->isCloneOf($city);
     }
 
-    public function testDeserializeWithTypeIdentifiedObjectShouldNotObjectWithoutIdentifierAttribute()
+    public function testDeserializeWithCollectionOfTypeIdentifiedObject()
+    {
+        $country = new Country();
+        $country->setName('France');
+
+        $palaiseau = new City();
+        $palaiseau->setName('Palaiseau');
+        $palaiseau->countryIs($country);
+
+        $paris = new City();
+        $paris->setName('Paris');
+        $paris->countryIs(clone $country);
+
+        $cities = [$palaiseau, $paris];
+
+        $configuration = new Configuration();
+        $configuration->identifierAttribute('type');
+
+        $configurationObject = new Configuration\Object(new ClassName(City::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->attributeUseIdentifiedObject('country', 'countryIs', 'getCountry')
+            ->registerToConfigurationWithIdentifier($configuration, 'city');
+
+        $configurationObject = new Configuration\Object(new ClassName(Country::class));
+        $configurationObject
+            ->attributeUseMethod('name', 'setName', 'getName')
+            ->registerToConfigurationWithIdentifier($configuration, 'country');
+
+        $this
+            ->given($this->newTestedInstance($configuration))
+            ->array($this->testedInstance->deserialize(
+                '[
+                    {"type": "city", "name": "Palaiseau", "country": {"type": "country", "name": "France"}},
+                    {"type": "city", "name": "Paris", "country": {"type": "country", "name": "France"}}
+                ]'
+            ))
+                ->isEqualTo($cities);
+    }
+
+    public function testDeserializeWithTypeIdentifiedObjectShouldNotDeserializeObjectWithoutIdentifierAttribute()
     {
         $city = new City();
         $city->setName('Palaiseau');
@@ -154,7 +220,7 @@ class Deserialize extends \atoum
                 ->isCloneOf($city);
     }
 
-    public function testDeserializeWithTypeIdentifiedObjectShouldNotObjectWithUnknownIdentifierAttribute()
+    public function testDeserializeWithTypeIdentifiedObjectShouldNotDeserializeObjectWithUnknownIdentifierAttribute()
     {
         $city = new City();
         $city->setName('Palaiseau');
